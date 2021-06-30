@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/fraudscore/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btpay="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" xmlns:btach="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" xmlns:btwire="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" xmlns:btfraud="http://www.bottomline.com/webseries/schema/ps/platform/fraudscore/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/fraudscore/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" jaxb:version="2.1">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" schemaLocation="../domain/platformPayment.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" schemaLocation="../domain/platformPaymentACH.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" schemaLocation="../domain/platformPaymentWire.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/fraudscore/v1" schemaLocation="../domain/platformFraudScore.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" schemaLocation="../domain/platformUser.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="../domain/platformUserGroup.xsd"/>
+	<xsd:element name="fraudScoreRequest" type="tns:FraudScoreRequest" nillable="true"/>
+	<xsd:element name="fraudScoreResponse" type="tns:FraudScoreResponse" nillable="true"/>
+	<xsd:element name="createChallengeRequest" type="tns:CreateChallengeRequest" nillable="true"/>
+	<xsd:element name="createChallengeResponse" type="tns:ChallengeResponse" nillable="true"/>
+	<xsd:element name="validateChallengeRequest" type="tns:ValidateChallengeRequest" nillable="true"/>
+	<xsd:element name="validateChallengeResponse" type="tns:ChallengeResponse" nillable="true"/>
+	<xsd:element name="cancelChallengeRequest" type="tns:CancelChallengeRequest" nillable="true"/>
+	<xsd:element name="cancelChallengeResponse" type="tns:ChallengeResponse" nillable="true"/>
+	<xsd:complexType name="FraudScoreRequest">
+		<xsd:complexContent>
+			<xsd:extension base="btfraud:FraudScoreRequest">
+				<xsd:sequence>
+					<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FraudScoreResponse">
+		<xsd:complexContent>
+			<xsd:extension base="btfraud:FraudScoreResponse">
+				<xsd:sequence>
+					<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">WebSeries standard response fields including boolean result and optionally error code and error messages</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CreateChallengeRequest">
+		<xsd:sequence>
+			<xsd:element name="messageId" type="xsd:string"/>
+			<xsd:element name="challengeType" type="xsd:string"/>
+			<xsd:element name="paymentId" type="btpay:PaymentId"/>
+			<xsd:element name="user" type="btuser:UserIdentifier"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ValidateChallengeRequest">
+		<xsd:complexContent>
+			<xsd:extension base="tns:CreateChallengeRequest">
+				<xsd:sequence>
+					<xsd:element name="challengeResultCode" type="xsd:integer"/>
+					<xsd:element name="challengeResultInfo" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CancelChallengeRequest">
+		<xsd:complexContent>
+			<xsd:extension base="tns:CreateChallengeRequest">
+				<xsd:sequence>
+					<xsd:element name="challengeCancelType" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ChallengeResponse">
+		<xsd:sequence>
+			<xsd:element name="messageId" type="xsd:string"/>
+			<xsd:element name="resultCode" type="xsd:string"/>
+			<xsd:element name="resultDescription" type="xsd:string"/>
+			<xsd:element name="terminateSession" type="xsd:boolean" default="false" minOccurs="0"/>
+			<xsd:element name="disableUser" type="xsd:boolean" default="false" minOccurs="0"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

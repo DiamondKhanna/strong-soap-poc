@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:btpromsg="http://www.bottomline.com/webseries/schema/ps/message/profilemaint/v1" 
+	xmlns:btprofile="http://www.bottomline.com/webseries/schema/ps/platform/profile/v1" 
+	xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" 
+	xmlns:btfilter="http://www.bottomline.com/webseries/schema/ps/platform/filter/v1" 
+	xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" 
+	targetNamespace="http://www.bottomline.com/webseries/schema/ps/message/profilemaint/v1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/profile/v1" schemaLocation="../domain/platformProfile.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/filter/v1" schemaLocation="../domain/platformFilter.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:complexType name="saveProfileEntityRequest">
+		<xsd:sequence>
+			<xsd:element name="profileData" type="btprofile:ProfileData"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="saveProfileEntityResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="profileNum" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modifyProfileEntityRequest">
+		<xsd:sequence>
+			<xsd:element name="profileNum" type="xsd:string"/>
+			<xsd:element name="profileData" type="btprofile:ProfileData"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modifyProfileEntityResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="profileNum" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileEntityRequest">
+		<xsd:sequence>
+			<xsd:element name="profileNum" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileEntityResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="profileData" type="btprofile:ProfileData"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileListEntityRequest">
+		<xsd:sequence>
+			<xsd:element name="inquiryId" type="xsd:integer" nillable="true"/>
+			<xsd:element name="action" type="btws:ActionData" nillable="true"/>
+			<xsd:element name="profileType" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileListEntityResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="profileListData" type="btprofile:ProfileListData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="deleteProfileEntityRequest">
+		<xsd:sequence>
+			<xsd:element name="profileNums" type="xsd:string" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="deleteProfileEntityResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="filterCriteriaEntityRequest">
+		<xsd:sequence>
+			<xsd:element name="filterId" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="filterCriteriaEntityResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="filterFieldData" type="btfilter:FilterFieldData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="copyProfileEntityRequest">
+		<xsd:sequence>
+			<xsd:element name="sourceProfileNum" type="xsd:string"/>
+			<xsd:element name="destProfileNum" type="xsd:string"/>
+			<xsd:element name="destProfileId" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="copyProfileEntityResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="profileNum" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

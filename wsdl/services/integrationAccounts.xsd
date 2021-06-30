@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/account/inquiry/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/account/inquiry/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="../domain/platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd"/>
+	<xsd:element name="accountsForActionDataRequest" type="tns:AccountsForActionDataRequest" nillable="true"/>
+	<xsd:element name="accountsForActionDataResponse" type="tns:AccountsForActionDataResponse" nillable="true"/>
+	<xsd:element name="accountsForActionsDataRequest" type="tns:AccountsForActionsDataRequest" nillable="true"/>
+	<xsd:element name="accountsForActionsDataResponse" type="tns:AccountsForActionsDataResponse" nillable="true"/>	
+	<xsd:element name="AISPaccountSimpleRequest" type="tns:AccountSimpleRequest" nillable="true"/>
+	<xsd:element name="AISPaccountWithTypeResponse" type="tns:AccountWithTypeResponse" nillable="true"/>
+	<xsd:element name="PISPaccountWithTypeRequest" type="tns:AccountWithTypeRequest" nillable="true"/>
+	<xsd:element name="PISPaccountWithTypeResponse" type="tns:AccountWithTypeResponse" nillable="true"/>
+	<xsd:complexType name="AccountsForActionDataRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="action" type="btws:ActionData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard structure representing an action that can be performed in the platform.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountsForActionDataResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="account" type="btacct:AccountDataExtended" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Elements representing list of accounts that user may use based on action supplied in request. Accounts returned have been filtered based on entitlements.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountsForActionsDataRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="action" type="btws:ActionData" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">One or more actions (product/function/type/actionMode)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountsForActionsDataResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="accountsForActions" type="btacct:AccountsForAction" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Elements representing list of accounts that user may use based with actions supplied in request. Accounts returned have been filtered based on entitlements.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountSimpleRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti"/>	
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountWithTypeRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti"/>	
+			<xsd:element name="action" type="btws:ActionData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Action Data (product/function/type/actionMode)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element name="subType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment sub-type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element name="paymentAmount" type="btamt:Amount" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Payment Amount.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currencyCode" type="btamt:CurrencyCode" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">3 letter currency code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stringentIndicator" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Indicates if the request is stringent or not. Y for stringent and N for no stringent</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountWithTypeResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="accountDetails" type="btacct:AccountDataWithSortCode" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Elements representing list of accounts that user may use based with actions supplied in request. Accounts returned have been filtered based on entitlements.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="morePagesIndicator" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="stringentIndicator" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Indicates if the request is stringent or not. Y for stringent and N for no stringent</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>	
+</xsd:schema>

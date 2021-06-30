@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btpanel="http://www.bottomline.com/webseries/schema/ps/platform/panel/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="./platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/panel/v1" schemaLocation="./platformPanel.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="./platformEntitlements.xsd"/>
+	<xsd:simpleType name="GroupId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:complexType name="UserGroupIdentifier">
+		<xsd:sequence>
+			<xsd:element name="groupId" type="tns:GroupId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies a group of users. This represents either a client organization or, in the context of admin application, a customer service or operations group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentGroupId" type="tns:GroupId" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If the group is a subsidiary group this identifies the enterprise to which it belongs. If this is an "enterprise" group the group id and parent group id will be the same value. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="updateCount" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Used for optimistic locking</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupInfo">
+		<xsd:complexContent>
+			<xsd:extension base="tns:UserGroupIdentifier">
+				<xsd:sequence>
+					<xsd:element name="serviceGroupId" type="tns:GroupId" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Identifies the customer service group responsible for the client.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="baseCurrency" type="btamt:CurrencyCode" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Used to convert amounts and balances into a common base currency. Used in limits checks. </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="status" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Current status</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="groupName" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Group name</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="groupLevel" type="xsd:integer" default="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Group level - Admin User Groups: 0 - CBAO, 1 - Client Service User (CSU) Group.  Client User Groups: 0 - Client Enterprise User Group (CEU), 1 - Client User Group (CU)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="contactName" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Principal contact's name</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="contactTitle" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Principal contact's job title</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="emailAddress" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Contact's email address</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="phoneNumber" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Contact phone number</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="faxNumber" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Contact fax number</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="btws:Address3">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Client address information</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+					<xsd:element name="marketSegment" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Customer market segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="disabled" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Flag indicating group has been disabled, i.e. users will are unable to logon</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="gmtOffset" type="xsd:float" default="0" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Difference from GMT</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="timezoneId" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Textual representation of groups timezone</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="locale" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Default locale for the group</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="passwordExpiryDays" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Number of days after which users are forcaed to update their password</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="panelApproval" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Utilizes panel approval workflow. Default is for approval signatures or votes.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="superUserIndicator" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Support for "super users" enabled, i.e. no dual approval required for admin functions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="applicationSuperUserIndicator" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Support for "super users" enabled.i.e. no multi-approver required application functions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowSelfAdministration" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true allows for the usergroup to have users that can approve their own additions/modifications</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowSingleAdminPaymentAndTemplate" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true allows for the usergroup to have users that can approve their own additions/modifications for payment and templates</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowSingleAdminCM" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true allows for the usergroup to have users that can approve their own additions/modifications for check management functions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowSingleAdminElectronicPayPositivePay" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true allows for the usergroup to have users that can approve their own additions/modifications for electronic pay positive pay functions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowSingleAdminAddressBook" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true allows for the usergroup to have users that can approve their own additions/modifications for beneficiary address book</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowFreeFormPayMod" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Support for allowing modification of free form payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowTmplRepPayMod" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Support for allowing modification of repetitive payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="allowImportedPayMod" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Support for allowing modification of imported payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mobile" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Flag indicating group has access via mobile channel</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="addressBookPurge" type="xsd:boolean" default="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Flag indicating group is configured for beneficiary address book purge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="addressBookPurgeIntervalDays" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Number of days between checks for stale records</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="addressBookPurgeRetention" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Number of months after which records are considered stale</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="requireBeneFromAddressBookForPayment" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true requires beneficiaries for payments to be chosen from the address book for the usergroup.  Setting to false allow for free form beneficiary entry for payments.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="requireBeneFromAddressBookForTemplate" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true requires beneficiaries for templates to be chosen from the address book for the usergroup.  Setting to false allow for free form beneficiary entry for templates.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="requireImportValidation" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Setting to true requires beneficiaries validation upon import</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="paymentImportMethod" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">This setting determines if users in that user group will be able to perform traditional imports, file level imports, or have a choice.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="billingPackage" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The Billing Package to be used by this group.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="billingAccount" type="btws:BillingAccount" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The Billing Account for this group.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="billingStartDate" type="xsd:date" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The start date for Billing for this group.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="billingEndDate" type="xsd:date" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The end date for Billing for this group.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="settings" type="btws:Setting" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of group level settings. Each setting is a name/value pair.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="productSettings" type="btws:ProductSettings" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of product specific settings. Each setting is a name/value pair.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="aisp" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Flag indicating  Account Information Service Providers setting.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pisp" type="xsd:boolean" default="false" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Flag indicating Payment Initiation Service Providers setting.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:anyAttribute processContents="lax">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Enable extensible list of attributes.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:anyAttribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroup">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of user group including audit data</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:UserGroupInfo">
+				<xsd:sequence>
+					<xsd:element name="entered" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of  user group data entry</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lastModified" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of user group  data modification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="approved" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of user group  approval</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="deleted" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of user group  deletion</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupLimits">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User Group data structure which includes basic info along with any limits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:UserGroupIdentifier">
+				<xsd:sequence>
+					<xsd:element name="transactionTypes" type="btent:TypeWithLimits" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of usergroup-level restriction sets.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="btent:provisioningAction" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Optional attribute. Used with resources included in provisioning messages (SPML). This attribute describes the action the consumer of the message should take for the entity to which it is attached. Values for this attribute are:(A)dd, (U)pdate, (N)one. (A)dd is processed by appending limits to the existing user group's limits, (U)pdate indicates that full set of limits is present and will be used to replace any limits user group has. None is used if entity is included for completeness or for informational purposes only and no action is required to be taken for that entity as part of processing the message.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PanelApproverTypeInfo">
+		<xsd:sequence>
+			<xsd:element name="approverType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Approver Type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approverName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Approver Name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PanelApproval">
+		<xsd:annotation>
+			<xsd:documentation>Panel approval, including approver types, profile filters, and profile assignments</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="approverTypes" type="btpanel:PanelApproverTypes" minOccurs="0"/>
+			<xsd:element name="profileFilter" type="btpanel:PanelProfileFilter" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="profileAssignment" type="btpanel:PanelProfileAssignment" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

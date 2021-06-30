@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/panel/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/panel/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="./platformEntitlements.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">Standard model for panel data.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Threshold">
+		<xsd:sequence>
+			<xsd:element name="amount" type="xsd:long"/>
+			<xsd:sequence>
+				<xsd:element name="thresholdPanels" type="tns:ThresholdPanel" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ThresholdPanel">
+		<xsd:sequence>
+			<xsd:element name="sequence" type="xsd:integer"/>
+			<xsd:element name="approvers" type="tns:ApproverWithId" maxOccurs="6"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Approver">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>One of 10 letters from "A" to "J"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The corresponding name for the type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApproverWithId">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>One of 10 letters from "A" to "J"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The corresponding name for the type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id">
+			<xsd:annotation>
+				<xsd:documentation>Approver type number, from 1-6</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="PanelProfileFilter">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A panel profile filter</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string"/>
+			<xsd:element name="profileCode" type="xsd:string"/>
+			<xsd:element name="description" type="xsd:string"/>
+			<xsd:element name="thresholds" type="tns:Threshold" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute ref="btent:provisioningAction"/>
+	</xsd:complexType>
+	<xsd:complexType name="PanelProfileAssignmentAccount">
+		<xsd:sequence>
+			<xsd:element name="bankCode" type="xsd:string"/>
+			<xsd:element name="accountNumber" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PanelProfileAssignment">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A panel profile assignment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string"/>
+			<xsd:element name="paymentType" type="xsd:string"/>
+			<xsd:element name="entryMethod" type="xsd:string"/>
+			<xsd:element name="profileCode" type="xsd:string"/>
+			<xsd:element name="panelName" type="xsd:string"/>
+			<xsd:element name="allAccounts" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Account" type="tns:PanelProfileAssignmentAccount" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute ref="btent:provisioningAction"/>
+	</xsd:complexType>
+	<xsd:complexType name="PanelApproverTypes">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Panel approver types for an existing user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string"/>
+			<xsd:element name="approvers" type="tns:Approver" maxOccurs="10"/>
+		</xsd:sequence>
+		<xsd:attribute ref="btent:provisioningAction"/>
+	</xsd:complexType>
+</xsd:schema>

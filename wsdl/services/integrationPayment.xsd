@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/payment/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btpay="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" xmlns:btach="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" xmlns:btwire="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/payment/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" schemaLocation="../domain/platformPayment.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" schemaLocation="../domain/platformPaymentACH.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="../domain/platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" schemaLocation="../domain/platformPaymentWire.xsd"/>
+	<xsd:element name="getPaymentAuditHistoryRequest" type="tns:GetPaymentAuditHistoryRequest" nillable="true"/>
+	<xsd:element name="getPaymentAuditHistoryResponse" type="tns:GetPaymentAuditHistoryResponse" nillable="true"/>
+	<xsd:element name="actionPaymentRequest" type="tns:ActionPaymentRequest" nillable="true"/>
+	<xsd:element name="actionPaymentResponse" type="tns:ActionPaymentResponse" nillable="true"/>
+	<xsd:element name="getPaymentsToActionRequest" type="tns:GetPaymentsToActionRequest" nillable="true"/>
+	<xsd:element name="getPaymentsToActionResponse" type="tns:GetPaymentsToActionResponse" nillable="true"/>
+	<xsd:element name="getPaymentBeneficiariesRequest" type="tns:GetPaymentBeneficiariesRequest" nillable="true"/>
+	<xsd:element name="getPaymentBeneficiariesResponse" type="tns:GetPaymentBeneficiariesResponse" nillable="true"/>
+	<xsd:element name="getPaymentDetailRequest" type="tns:GetPaymentDetailRequest" nillable="true"/>
+	<xsd:element name="getPaymentDetailResponse" type="tns:GetPaymentDetailResponse" nillable="true"/>
+	<xsd:element name="getEntitledPaymentActionsRequest" type="tns:GetEntitledPaymentActionsRequest" nillable="true"/>
+	<xsd:element name="getEntitledPaymentActionsResponse" type="tns:GetEntitledPaymentActionsResponse" nillable="true"/>
+	<xsd:element name="getRatesForPaymentsRequest" type="tns:GetRatesForPaymentsRequest" nillable="true"/>
+	<xsd:element name="getRatesForPaymentsResponse" type="tns:GetRatesForPaymentsResponse" nillable="true"/>
+	<xsd:element name="tradeForPaymentsRequest" type="tns:TradeForPaymentsRequest" nillable="true"/>
+	<xsd:element name="tradeForPaymentsResponse" type="tns:TradeForPaymentsResponse" nillable="true"/>
+	<xsd:element name="paymentTypeListRequest" type="tns:PaymentTypeListRequest" nillable="true"/>
+	<xsd:element name="paymentTypeListResponse" type="tns:PaymentTypeListResponse" nillable="true"/>
+	<xsd:complexType name="PaymentTypeListRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortcode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Sort code of the Bank</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account Number</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currencyCode" type="btamt:CurrencyCode">
+				<xsd:annotation>
+					<xsd:documentation>The base currency code.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentTypeListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentTypes" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of Payment types</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentAuditHistoryRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="btpay:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies payment whose audit history is being requested</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentAuditHistoryResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields including boolean result and optionally error code and error messages</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="auditHistory" type="btpay:PaymentAuditHistory">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Contains list of each action taken on the payment including details on which user performed the action and date and time it occured</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ActionPaymentRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="action" type="btpay:PaymentAction">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Action code of action to be performed on payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="saveWithWarnings" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional parameter (defaults to false). Set to true when resubmitting items returned with warnings.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="comment" type="btpay:Comment" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional user comment associated with the action about to be taken. Applies to all payments in request. Currently used for reject reason.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="btpay:PaymentIdWithComment" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies payment on which user wishes to perform an action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ActionPaymentResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItemWithWarnings">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields. Contains an overall response and detailed response for each item in the original request.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentsToActionRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields for list of items</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="action" type="btpay:PaymentAction">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries action user would like to perform, e.g. APPROVE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentsToActionResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentCount" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Total number of transactions which are available. Returned number may be less based on paging parameters passsed in request.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payment" type="btpay:PaymentSummary" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of payments available to the user which are eligble for the requested action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentBeneficiariesRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields for list of items</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="btpay:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies payment for which beneficiary information will be returned. This is intended for use with batch payments to return list of beneficiary information for each child in the batch.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentBeneficiariesResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneficiary" type="btach:ACHBeneficiaryDetails" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of beneficiaries for specified batch payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentDetailRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields for list of items</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="btpay:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies payment for which detail information will be returned. Details returned will be based on the payment type referenced in the payment id.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetPaymentDetailResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice id="paymentDetail">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The detail returned will be specific to the payment type of the requested payment</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element name="ACHBatchDetails" type="btach:ACHBatchDetails">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">ACH batch details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="cashConcentration" type="btach:CashConcentration">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Cash Concentration details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="cashConcentrationDisbursement" type="btach:CashConcentrationDisbursement">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Cash Concentration/Disbursement details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="consumerCollectionsPayment" type="btach:ConsumerCollectionsPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Consumer Collections/Payments details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="cashDisbursement" type="btach:CashDisbursement">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Cash Disbursement details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="corporateCollection" type="btach:CorporateCollection">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Corporate Collections</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="consumerPayment" type="btach:ConsumerPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Consumer Payments</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="consumerCollection" type="btach:ConsumerCollection">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Consumer Collection  details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="childSupportPayment" type="btach:ChildSupportPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Child Support Payments details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="corporateVendorPayment" type="btach:CorporateVendorPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Corporate Vendor Payment details </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="destroyedCheck" type="btach:DestroyedCheck">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Destroyed Check details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="IATPayment" type="btach:IATPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">International ACH Transaction details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="payrollPayment" type="btach:PayrollPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Payroll Payment details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="telephoneInitiatedCollection" type="btach:TelephoneInitiatedCollection">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Telephone Initiated Collection details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="webInitiatedCollection" type="btach:WebInitiatedCollection">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Web Initiated Collection details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="taxPayment" type="btach:TaxPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Tax Payment details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="domesticWire" type="btwire:DomesticWire">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Domestic Wire details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="domesticBranchWire" type="btwire:DomesticBranchWire">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Domestic Branch Wire details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="internationalWire" type="btwire:InternationalWire">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">International Wire details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="internationalBranchWire" type="btwire:InternationalBranchWire">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">International Branch Wire details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="ACHPayment" type="btwire:ACHPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Single ACH Payment details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="noticeToReceive" type="btwire:NoticeToReceive">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Notice to receive (MT210) details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="transfer" type="btwire:Transfer">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Account transfer details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="draft" type="btwire:Draft">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Draft details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="multiBankPayment" type="btwire:MultiBankPayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Multi-bank Payment details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="institutionalTransfer" type="btwire:InstitutionalTransfer">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Institutional Transfer details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="drawdown" type="btwire:Drawdown">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Drawdown details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="billPay" type="btwire:BillPay">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Bill payment details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="nachaFileImport" type="btach:NachaFileImport">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Nacha File payment details</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetEntitledPaymentActionsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Requests a list of distinct actions the user has entitlements for, i.e. they are entitled to that action for at least one payment type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields for list of items</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetEntitledPaymentActionsResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Requests a list of distinct actions the user has entitlements for, i.e. they are entitled to that action for at least one payment type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields for list of items</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentAction" type="btpay:PaymentAction" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Action which the user has entitlement for</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetRatesForPaymentsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="btpay:PaymentId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies payment on which user wishes to get a rate quote.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetRatesForPaymentsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields. Contains an overall response and detailed response for each item in the original request.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rateQuote" type="btwire:FXQuote" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Rate quote for a cross currency payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TradeForPaymentsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields for list of items</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tradeRequest" type="btwire:FXTradeRequest" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Request for reach payment that a trade is performed. Includes both the payment id and the FX quote id that represents trade detail (e.g. rate)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TradeForPaymentsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields. Contains an overall response and detailed response for each item in the original request.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tradeDetails" type="btwire:FXTradeDetails" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Trade details for each successfully completed trade</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

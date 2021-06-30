@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/gridmaint/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btgview="http://www.bottomline.com/webseries/schema/ps/platform/gridview/v1" xmlns:btinq="http://www.bottomline.com/webseries/schema/ps/platform/inquiry/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/gridmaint/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/gridview/v1" schemaLocation="../domain/platformGridView.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/inquiry/v1" schemaLocation="../domain/platformInquiry.xsd"/>
+	<xsd:element name="SaveGridRequest" type="tns:SaveGridRequest" nillable="true"/>
+	<xsd:element name="SaveGridResponse" type="tns:SaveGridResponse" nillable="true"/>
+	<xsd:element name="UpdateGridRequest" type="tns:UpdateGridRequest" nillable="true"/>
+	<xsd:element name="UpdateGridResponse" type="tns:UpdateGridResponse" nillable="true"/>
+	<xsd:element name="GetGridRequest" type="tns:GetGridRequest" nillable="true"/>
+	<xsd:element name="GetGridResponse" type="tns:GetGridResponse" nillable="true"/>
+	<xsd:element name="GetAvailColumnsRequest" type="tns:GetAvailColumnsRequest" nillable="true"/>
+	<xsd:element name="GetAvailColumnsResponse" type="tns:GetAvailColumnsResponse" nillable="true"/>
+	<xsd:element name="GetGridListRequest" type="tns:GetGridListRequest" nillable="true"/>
+	<xsd:element name="GetGridListResponse" type="tns:GetGridListResponse" nillable="true"/>
+	<xsd:element name="SaveGridListRequest" type="tns:SaveGridListRequest" nillable="true"/>
+	<xsd:element name="SaveGridListResponse" type="tns:SaveGridListResponse" nillable="true"/>
+	<xsd:element name="DeleteGridRequest" type="tns:DeleteGridRequest" nillable="true"/>
+	<xsd:element name="DeleteGridResponse" type="tns:DeleteGridResponse" nillable="true"/>
+	<xsd:complexType name="SaveGridRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="gridView" type="btgview:GridView"/>
+			<xsd:element name="defaultView" nillable="true" type="xsd:boolean"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SaveGridResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="viewId" type="xsd:integer" nillable="true"/>			
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateGridRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="gridView" type="btgview:GridView"/>
+			<xsd:element name="defaultView" nillable="true" type="xsd:boolean"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateGridResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetGridRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="viewId" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetGridResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="gridView" type="btgview:GridView" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetAvailColumnsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="viewType" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetAvailColumnsResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="availableColumns" type="btinq:ColumnHeaderData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetGridListRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="viewType" type="xsd:string"/>
+			<xsd:element name="ownerType" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetGridListResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="gridViewList" type="btgview:GridViewListItem" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SaveGridListRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="viewType" type="xsd:string"/>
+			<xsd:element name="gridViewList" type="btgview:GridViewListItem" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SaveGridListResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteGridRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="viewId" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteGridResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Elena Zilberberg (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/usergroup/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:btgen="http://www.bottomline.com/webseries/schema/ps/platform/generic/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/usergroup/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="../domain/platformEntitlements.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/generic/v1" schemaLocation="../domain/platformGenericEntity.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="../domain/platformUserGroup.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for managing WebSeries User Groups. </xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="createUserGroupRequest" type="tns:CreateUserGroupRequest" nillable="true"/>
+	<xsd:element name="createUserGroupResponse" type="tns:CreateUserGroupResponse" nillable="true"/>
+	<xsd:element name="cloneUserGroupRequest" type="tns:CloneUserGroupRequest" nillable="true"/>
+	<xsd:element name="cloneUserGroupResponse" type="tns:CloneUserGroupResponse" nillable="true"/>
+	<xsd:element name="updateUserGroupRequest" type="tns:UpdateUserGroupRequest" nillable="true"/>
+	<xsd:element name="updateUserGroupResponse" type="tns:UpdateUserGroupResponse" nillable="true"/>
+	<xsd:element name="deleteUserGroupRequest" type="tns:DeleteUserGroupRequest" nillable="true"/>
+	<xsd:element name="deleteUserGroupResponse" type="tns:DeleteUserGroupResponse" nillable="true"/>
+	<xsd:element name="restoreUserGroupRequest" type="tns:RestoreUserGroupRequest" nillable="true"/>
+	<xsd:element name="restoreUserGroupResponse" type="tns:RestoreUserGroupResponse" nillable="true"/>
+	<xsd:element name="purgeUserGroupRequest" type="tns:PurgeUserGroupRequest" nillable="true"/>
+	<xsd:element name="purgeUserGroupResponse" type="tns:PurgeUserGroupResponse" nillable="true"/>
+	<xsd:element name="approveUserGroupRequest" type="tns:ApproveUserGroupRequest" nillable="true"/>
+	<xsd:element name="approveUserGroupResponse" type="tns:ApproveUserGroupResponse" nillable="true"/>
+	<xsd:element name="userGroupDetailRequest" type="tns:UserGroupDetailRequest" nillable="true"/>
+	<xsd:element name="userGroupDetailResponse" type="tns:UserGroupDetailResponse" nillable="true"/>
+	<xsd:element name="userGroupListRequest" type="tns:UserGroupListRequest" nillable="true"/>
+	<xsd:element name="userGroupListResponse" type="tns:UserGroupListResponse" nillable="true"/>
+	<xsd:element name="userGroupEntitlementsListRequest" type="tns:UserGroupEntitlementsListRequest" nillable="true"/>
+	<xsd:element name="userGroupEntitlementsListResponse" type="tns:UserGroupEntitlementsListResponse" nillable="true"/>
+	<xsd:element name="addUserGroupEntitlementsRequest" type="tns:AddUserGroupEntitlementsRequest" nillable="true"/>
+	<xsd:element name="addUserGroupEntitlementsResponse" type="tns:AddUserGroupEntitlementsResponse" nillable="true"/>
+	<xsd:element name="deleteUserGroupEntitlementsRequest" type="tns:DeleteUserGroupEntitlementsRequest" nillable="true"/>
+	<xsd:element name="deleteUserGroupEntitlementsResponse" type="tns:DeleteUserGroupEntitlementsResponse" nillable="true"/>
+	<xsd:element name="replaceUserGroupEntitlementsRequest" type="tns:ReplaceUserGroupEntitlementsRequest" nillable="true"/>
+	<xsd:element name="replaceUserGroupEntitlementsResponse" type="tns:ReplaceUserGroupEntitlementsResponse" nillable="true"/>
+	<xsd:element name="userGroupOtherEntitiesListRequest" type="tns:UserGroupOtherEntitiesListRequest" nillable="true"/>
+	<xsd:element name="userGroupOtherEntitiesListResponse" type="tns:UserGroupOtherEntitiesListResponse" nillable="true"/>
+	<xsd:element name="addEntitiesForUserGroupRequest" type="tns:AddEntitiesForUserGroupRequest" nillable="true"/>
+	<xsd:element name="addEntitiesForUserGroupResponse" type="tns:AddEntitiesForUserGroupResponse" nillable="true"/>
+	<xsd:element name="userGroupLimitsRequest" type="tns:UserGroupLimitsRequest" nillable="true"/>
+	<xsd:element name="userGroupLimitsResponse" type="tns:UserGroupLimitsResponse" nillable="true"/>
+	<xsd:element name="replaceUserGroupLimitsRequest" type="tns:ReplaceUserGroupLimitsRequest" nillable="true"/>
+	<xsd:element name="replaceUserGroupLimitsResponse" type="tns:ReplaceUserGroupLimitsResponse" nillable="true"/>
+	<xsd:element name="addUserGroupLimitsRequest" type="tns:AddUserGroupLimitsRequest" nillable="true"/>
+	<xsd:element name="addUserGroupLimitsResponse" type="tns:AddUserGroupLimitsResponse" nillable="true"/>
+	<xsd:element name="panelApproveUserGroupListRequest" type="tns:PanelApproveUserGroupListRequest" nillable="true"/>
+	<xsd:element name="panelApproveUserGroupListResponse" type="tns:PanelApproveUserGroupListResponse" nillable="true"/>
+	<xsd:complexType name="CreateUserGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Create a new user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroup" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user group to be created.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="deafultPassword" type="xsd:string" nillable="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Deprecated. Please use defaultPassword.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="defaultPassword" type="xsd:string" nillable="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Default password to be used for initial admin users that are created automatically. This password is set as expired and admins are forced to change it upon first login.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user group is a customer. If set to false the requesting user group should be CBAO and the request is to set up a Customer Service Unit (CSU) within the bank</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CreateUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CloneUserGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Create a new user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="modelUserGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifier of the source or model group to clone.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupInfo" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user group to be created. This infdormation will override or supplement what is supplied in the model group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cloneEntitlements" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Setting this to true results in new user groups entitlements being copied from model user group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cloneRoles" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Setting this to true results in new user groups roles being copied from model user group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="deafultPassword" type="xsd:string" nillable="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Deprecated. Please use defaultPassword.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="defaultPassword" type="xsd:string" nillable="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Default password to be used for initial admin users that are created automatically. This password is set as expired and admins are forced to change it upon first login.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if requesting user (from request header) is bank administrator (CBAO or CSU) and user group is a customer. If set to false the requesting user group should be CBAO and the request is to set up a Customer Service Unit (CSU) within the bank</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CloneUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateUserGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update user group information</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroup" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Updated details of the user group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user. False if CBAO user is updating CSU information.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="maintainCurrentStatus" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If set to true, user group status will be kept without change after update.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteUserGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more user groups </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupId" type="btug:UserGroupIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the user groups to be deleted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PurgeUserGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Purge one or more user groups </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupId" type="btug:UserGroupIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the user groups to be deleted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PurgeUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreUserGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Restore one or more user groups </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupId" type="btug:UserGroupIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the user groups to be restored.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupDetailRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get user group details based on identifier</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupId" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User id to fetch details for.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than maintenance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupDetailResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroup">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user group model including audit fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of user groups based on serach criteria</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is rf data requested should be operational data rather than maintenance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on parent user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serviceUserGroup" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on service group (CSU) id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="marketSegment" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on market segment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroup" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupEntitlementsListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of user group entitlements for specified user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than maintenance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupEntitlementsListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entitledType" type="btent:TypeWithLimits" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of entitled types. Note: Returned type includes optional limits data. Limits on user group entitlements are not yet supported, however they have been defined in the schema to support addition of this feature in a future release.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddUserGroupEntitlementsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add list of user group entitlements to specified user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entitledType" type="btent:TypeWithLimits" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of entitled types. Note: Returned type includes optional limits data. Limits on user group entitlements are not yet supported, however they have been defined in the schema to support addition of this feature in a future release.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddUserGroupEntitlementsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteUserGroupEntitlementsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add list of user group entitlements to specified user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entitledType" type="btent:TypeWithLimits" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of entitled types. Note: Returned type includes optional limits data. Limits on user group entitlements are not yet supported, however they have been defined in the schema to support addition of this feature in a future release.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteUserGroupEntitlementsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReplaceUserGroupEntitlementsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add list of user group entitlements to specified user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entitledType" type="btent:TypeWithLimits" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of entitled types. Note: Returned type includes optional limits data. Limits on user group entitlements are not yet supported, however they have been defined in the schema to support addition of this feature in a future release.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReplaceUserGroupEntitlementsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupOtherEntitiesListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of user group entitlements for specified user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than maintenance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entityType" type="xsd:string" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The entity type to retrieve</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupOtherEntitiesListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entitiesByType" type="btgen:EntitiesByType" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of other entities related to the specified user group, grouped by entity type.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddEntitiesForUserGroupRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entity" type="btgen:GenericEntity" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of generic entities for the specified entity type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddEntitiesForUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApproveUserGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more user groups </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupId" type="btug:UserGroupIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the user groups to be approved</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApproveUserGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupLimitsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get user group limits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupId" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Usergroup identifying info.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than maintenance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserGroupLimitsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupLimits" type="btug:UserGroupLimits">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic usergroup info plus limits.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than maintenance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReplaceUserGroupLimitsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update a usergroup's limits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupLimits" type="btug:UserGroupLimits">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic usergroup info plus limits.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReplaceUserGroupLimitsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddUserGroupLimitsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add more usergroup's limits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupLimits" type="btug:UserGroupLimits">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic usergroup info plus limits.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddUserGroupLimitsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PanelApproveUserGroupListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more user groups </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">UserGroup</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PanelApproveUserGroupListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="xsd:string" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">USERGROUP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PanelApproverTypeInfo" type="btug:PanelApproverTypeInfo" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Approve Type Info List</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

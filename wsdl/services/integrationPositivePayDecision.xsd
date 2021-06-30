@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/positivepay/v1" 
+		xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" 
+		xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" 
+		xmlns:btinq="http://www.bottomline.com/webseries/schema/ps/message/inquiry/v1"
+		targetNamespace="http://www.bottomline.com/webseries/schema/is/message/positivepay/v1" 
+		elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/checkmgmt/v1" schemaLocation="../domain/platformCheckManagement.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/inquiry/v1" schemaLocation="platformInquiry.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for performing positive pay decision.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="positivePayDecisionRequest" type="tns:PositivePayDecisionRequest" nillable="true"/>
+	<xsd:element name="positivePayDecisionResponse" type="tns:PositivePayDecisionResponse" nillable="true"/>
+	<xsd:element name="positivePayAccountListRequest" type="tns:PositivePayAccountListRequest" nillable="true"/>
+	<xsd:element name="positivePayAccountListResponse" type="tns:PositivePayAccountListResponse" nillable="true"/>
+	<xsd:element name="positivePaySuspectItemListRequest" type="tns:PositivePaySuspectItemListRequest" nillable="true"/>
+	<xsd:element name="positivePaySuspectItemListResponse" type="tns:PositivePaySuspectItemListResponse" nillable="true"/>
+	<xsd:complexType name="PositivePayDecisionRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Request for user profile information. Returns profile information for user identified in the user data section of the request header.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Webseries standard request information.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="positivePaySuspectId" type="tns:PositivePaySuspectId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the check entry within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="decisionAction" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Positive pay decision action to be performed: PAY, PAYISSUE, RETURN</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="returnReason" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Return reason; required for return decision.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PositivePayDecisionResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User profile information for user identified in the user data section of the request. Data on the users group details, the user details and the transaction types the user is entitled to access are included in the response data.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeaderMultiItem" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Webseries standard response information.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PositivePaySuspectId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Unique identifier for positive pay suspect record.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RecordId" type="xsd:integer" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="UpdateCount" type="xsd:integer" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PositivePayAccountListRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="pendingSuspectItemsOnly" type="xsd:boolean" default="false" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PositivePayAccountListResponse">
+		<xsd:complexContent>
+			<xsd:extension base="btinq:InquiryResponse"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PositivePaySuspectItemListRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="positivePayAccountBatchId" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PositivePaySuspectItemListResponse">
+		<xsd:complexContent>
+			<xsd:extension base="btinq:InquiryResponse"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

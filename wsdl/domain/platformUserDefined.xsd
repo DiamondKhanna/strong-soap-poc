@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/userdefinedfield/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/userdefinedfield/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="./platformAmount.xsd"/>
+	<xsd:simpleType name="UserDefinedDateType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:dateTime"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="UserDefinedNumberType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:decimal"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="UserDefinedTextType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="35"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="UserDefinedCodeType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="16"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:attributeGroup name="UserDefinedFieldAttributes">
+		<xsd:annotation>
+			<xsd:documentation>Attributes define internal name and display name (label).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="name" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Internal/system name used for this field </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="label" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">User assigned name used for this field (for display)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:complexType name="UserDefinedAmountField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User defined amount field. Attributes define internal name and display name (label).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="btamt:Amount">
+				<xsd:attributeGroup ref="tns:UserDefinedFieldAttributes"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserDefinedDateField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User defined date field. Attributes define internal name and display name (label).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="tns:UserDefinedDateType">
+				<xsd:attributeGroup ref="tns:UserDefinedFieldAttributes"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserDefinedNumberField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User defined numeric field. Attributes define internal name and display name (label).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="tns:UserDefinedNumberType">
+				<xsd:attributeGroup ref="tns:UserDefinedFieldAttributes"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserDefinedTextField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User defined freeform text field. Attributes define internal name and display name (label).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="tns:UserDefinedTextType">
+				<xsd:attributeGroup ref="tns:UserDefinedFieldAttributes"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserDefinedCodeField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User defined code field (lookup/key to other data). Attributes define internal name and display name (label).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="tns:UserDefinedCodeType">
+				<xsd:attributeGroup ref="tns:UserDefinedFieldAttributes"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserDefinedFields">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User defined fields. WebSeries alows user to define a number of custom fields which are tracked along with payment.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="userDefinedAmount" type="tns:UserDefinedAmountField" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="userDefinedDate" type="tns:UserDefinedDateField" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="userDefinedNumber" type="tns:UserDefinedNumberField" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="userDefinedText" type="tns:UserDefinedTextField" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="userDefinedCode" type="tns:UserDefinedCodeField" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

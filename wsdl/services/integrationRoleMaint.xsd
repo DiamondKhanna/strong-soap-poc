@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/role/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/role/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="../domain/platformEntitlements.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="../domain/platformUserGroup.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for managing Roles within WebSeries</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="createRoleRequest" type="tns:CreateRoleRequest" nillable="true"/>
+	<xsd:element name="createRoleResponse" type="tns:CreateRoleResponse" nillable="true"/>
+	<xsd:element name="updateRoleRequest" type="tns:UpdateRoleRequest" nillable="true"/>
+	<xsd:element name="updateRoleResponse" type="tns:UpdateRoleResponse" nillable="true"/>
+	<xsd:element name="deleteRoleRequest" type="tns:DeleteRoleRequest" nillable="true"/>
+	<xsd:element name="deleteRoleResponse" type="tns:DeleteRoleResponse" nillable="true"/>
+	<xsd:element name="approveRoleRequest" type="tns:ApproveRoleRequest" nillable="true"/>
+	<xsd:element name="approveRoleResponse" type="tns:ApproveRoleResponse" nillable="true"/>
+	<xsd:element name="roleDetailRequest" type="tns:RoleDetailRequest" nillable="true"/>
+	<xsd:element name="roleDetailResponse" type="tns:RoleDetailResponse" nillable="true"/>
+	<xsd:element name="roleListRequest" type="tns:RoleListRequest" nillable="true"/>
+	<xsd:element name="roleListResponse" type="tns:RoleListResponse" nillable="true"/>
+	<xsd:complexType name="CreateRoleRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Create a new role</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="role" type="btent:Role" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user group to be created.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user group is a customer. If set to false the requesting user group should be the same as, or the parent of, the target user group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CreateRoleResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateRoleRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Create a new role</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="role" type="btent:Role" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user group to be updated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user group is a customer. If set to false the requesting user group should be the same as, or the parent of, the target user group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateRoleResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteRoleRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more role</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="role" type="btent:RoleIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the roles to be deleted. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user group is a customer. If set to false the requesting user group should be the same as, or the parent of, the target user group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteRoleResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApproveRoleRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more role</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="role" type="btent:RoleIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the roles to be deleted. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user group is a customer. If set to false the requesting user group should be the same as, or the parent of, the target user group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApproveRoleResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RoleDetailRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get user group details based on identifier</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="roleId" type="btent:RoleIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User id to fetch details for.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user group is a customer. If set to false the requesting user group should be the same as, or the parent of, the target user group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RoleDetailResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="role" type="btent:Role" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user group model including audit fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RoleListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of roles based on serach criteria</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="roleId" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on parent user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="roleDescription" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on parent user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Matches based on parent user group id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+				<xsd:element name="clientMaintenance" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true is requesting user (from request header) is bank administrator (CBAO or CSU) and user is client user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RoleListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="roleInfo" type="btent:RoleInfo" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries role model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/checkmgmt/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btcheck="http://www.bottomline.com/webseries/schema/ps/platform/checkmgmt/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/checkmgmt/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="../domain/platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" schemaLocation="../domain/platformBank.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/checkmgmt/v1" schemaLocation="../domain/platformCheckManagement.xsd"/>
+	<xsd:element name="placeStopRequest" type="tns:PlaceStopRequest" nillable="true"/>
+	<xsd:element name="placeStopResponse" type="tns:PlaceStopResponse" nillable="true"/>
+	<xsd:element name="cancelStopRequest" type="tns:CancelStopRequest" nillable="true"/>
+	<xsd:element name="cancelStopResponse" type="tns:CancelStopResponse" nillable="true"/>
+	<xsd:element name="getCheckImageRequest" type="tns:GetCheckImageRequest" nillable="true"/>
+	<xsd:element name="getCheckImageResponse" type="tns:GetCheckImageResponse" nillable="true"/>
+	<xsd:element name="checkInquiryRequest" type="tns:CheckInquiryRequest" nillable="true"/>
+	<xsd:element name="checkInquiryResponse" type="tns:CheckInquiryResponse" nillable="true"/>
+	<xsd:complexType name="PlaceStopRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Request to back office to place a stop on a check or range of checks</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkEntryId" type="btcheck:CheckEntryId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the check entry within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stopReason" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stopDuration" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="btcheck:StopCommonInfo"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PlaceStopResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Response from back office to request to place a stop on a check or range of checks</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="btcheck:StopResponseInfo"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CancelStopRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Request to back office to place a stop on a check or range of checks</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkEntryId" type="btcheck:CheckEntryId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the check entry within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="btcheck:StopCommonInfo"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CancelStopResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Response from back office to request to cancel a stop on a check or range of checks</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="btcheck:StopResponseInfo"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetCheckImageRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Request to external system to supply image(s) for a specific check</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountData" type="btacct:AccountDataExtended">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the account</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumber" type="btcheck:SerialNumber">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check serial number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="includeBack" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional parameter asking for back of check image.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amount" type="btamt:Amount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional check amount.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkIssueDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional check issue date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payeeName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional payee name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="memo" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional memo data</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="documentImageNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Document image number returned as part of a check inquiry that identifies the image (PIC_SEQUENCE_NUMBER)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="additionalData" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetCheckImageResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Response containing check image. May contain seperate images for front and back of check.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkImageData" type="btcheck:CheckImageData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check image data. May not be included if response code is "not found"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CheckInquiryRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Request to external system to supply check status and other details. Account is a required search parameter and at least one other criteria should be specified.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountSearch" type="btacct:SingleExternalAccountSearch">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account criteria for check inquiry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumberRange" type="btsearch:LongRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no dates specified request is for all issued dates.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="issueDateRange" type="btsearch:DateRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no dates specified request is for all issued dates.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paidDateRange" type="btsearch:DateRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no dates specified request is for all paid dates.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amountRange" type="btsearch:AmountRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no amount specified request is for any amount.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payeeSearch" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Search by payee name. Can use optional wildcard properties to specify exact, starts with or contains search types.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statusSearch" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Search by payee name. Can use optional wildcard properties to specify exact, starts with or contains search types.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CheckInquiryResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Response containing list of check details.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkData" type="btcheck:CheckInquiryItem" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check inquiry data. May not be included if response code is "not found".</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

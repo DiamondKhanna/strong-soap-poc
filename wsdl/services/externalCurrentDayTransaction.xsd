@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/currentdaytransaction/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:bttrans="http://www.bottomline.com/webseries/schema/ps/platform/transaction/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/currentdaytransaction/v1" elementFormDefault="qualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/transaction/v1" schemaLocation="../domain/platformTransaction.xsd"/>
+	<xsd:element name="currentDayAccountStatementRequest" type="tns:CurrentDayAccountStatementRequest" nillable="true"/>
+	<xsd:element name="currentDayAccountStatementResponse" type="tns:CurrentDayAccountStatementResponse" nillable="true"/>
+	<xsd:complexType name="CurrentDayAccountStatementRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation>Request Header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountStatementReference" type="tns:AccountStatement" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Account Statement Aggregate.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountStatement">
+		<xsd:sequence>
+			<xsd:element name="account" type="btacct:AccountDataFull" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="acctStmtInfoDelta" type="bttrans:TransactionIdentifier" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Account Statement High Water Mark (Delta).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CurrentDayAccountStatementResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation>Request Header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			<xsd:element name="accountStatementRecord" type="tns:AccountStatementRecord" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Account Statement Record.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountStatementRecord">
+		<xsd:sequence>
+			<xsd:element name="account" type="btacct:AccountDataFull" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Account to which the statement lines belong.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="responseComplete" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Flag to indicate the list is complete.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="acctStmtInfoCount" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Number of transaction lines included.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="acctStmtInfo"
+				type="bttrans:TransactionDataExtended" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						Account Statement Information Aggregate
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="acctStmtInfoHighWaterMark" type="bttrans:TransactionIdentifier" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Account Statement High Water Mark (Delta).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="acctStmtStatus" type="btmsg:Warning"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Account Statement Status Aggregate
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/accountsummarywidget/v1"
+ xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1"
+ xmlns:btacctsum="http://www.bottomline.com/webseries/schema/ps/platform/accountsummary/v1"
+ targetNamespace="http://www.bottomline.com/webseries/schema/is/message/accountsummarywidget/v1" 
+ elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/accountsummary/v1" schemaLocation="../domain/platformAccountSummaryWidget.xsd"/>
+	
+	<xsd:element name="GetDefaultsRequest" type="tns:GetDefaultsRequest" nillable="true"/>
+	<xsd:element name="GetDefaultsResponse" type="tns:GetDefaultsResponse" nillable="true"/>
+	<xsd:element name="ReadConfigurationRequest" type="tns:ReadConfigurationRequest" nillable="true"/>
+	<xsd:element name="ReadConfigurationResponse" type="tns:ReadConfigurationResponse" nillable="true"/>
+	<xsd:element name="SaveConfigurationRequest" type="tns:SaveConfigurationRequest" nillable="true"/>
+	<xsd:element name="SaveConfigurationResponse" type="tns:SaveConfigurationResponse" nillable="true"/>
+	<xsd:element name="GetAccountSummaryRequest" type="tns:GetAccountSummaryRequest" nillable="true"/>
+	<xsd:element name="GetAccountSummaryResponse" type="tns:GetAccountSummaryResponse" nillable="true"/>
+	
+	<xsd:complexType name="GetDefaultsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="widgetId" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetDefaultsResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="amountPreference" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReadConfigurationRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti"/>
+			<xsd:element name="widgetId" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReadConfigurationResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="amountPreference" type="xsd:string"/>
+			<xsd:element name="accountFilters" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="accountConfigItems" type="btacctsum:AccountConfigItem" minOccurs="0" maxOccurs="unbounded"/>		
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SaveConfigurationRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="widgetId" type="xsd:string"/>
+			<xsd:element name="amountPreference" type="xsd:string"/>
+			<xsd:element name="accountFilters" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>					
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SaveConfigurationResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetAccountSummaryRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti"/>
+			<xsd:element name="widgetId" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetAccountSummaryResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="accountSummaryItems" type="btacctsum:AccountSummaryItem" minOccurs="0" maxOccurs="unbounded"/>		
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

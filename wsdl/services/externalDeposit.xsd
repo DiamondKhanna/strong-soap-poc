@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/depositimage/v1"
+		xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1"
+		xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1"
+		xmlns:bttran="http://www.bottomline.com/webseries/schema/ps/platform/transaction/v1"
+		xmlns:btdep="http://www.bottomline.com/webseries/schema/ps/platform/depositimage/v1"
+		targetNamespace="http://www.bottomline.com/webseries/schema/external/message/depositimage/v1"
+		elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/transaction/v1" schemaLocation="../domain/platformTransaction.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/depositimage/v1" schemaLocation="../domain/platformDeposit.xsd"/>
+
+	<xsd:element name="getDepositSlipImageRequest" type="tns:GetDepositSlipImageRequest" nillable="true"/>
+	<xsd:element name="getDepositSlipImageResponse" type="tns:GetDepositSlipImageResponse" nillable="true"/>
+	<xsd:complexType name="GetDepositSlipImageRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Request to external system to supply image(s) for a specific check</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates whether the request is for a deposit slip (SLIP) or an individual item (ITEM) associated with a deposit.  If the requestType is ITEM, then documentImageNumber must be populated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionData" type="bttran:TransactionData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the transaction</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="documentImageNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Document image number returned as part of a check inquiry that identifies the image (PIC_SEQUENCE_NUMBER)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="additionalData" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetDepositSlipImageResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Response containing deposit slip image. May contain seperate images for front and back of deposit slip.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionData" type="bttran:TransactionData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the transaction</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="depositSlipImageData" type="btdep:DepositSlipImageData" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Deposit slip image data. May not be included if request fails.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

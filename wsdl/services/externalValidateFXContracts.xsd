@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/validateContract/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btcontract="http://www.bottomline.com/webseries/schema/ps/platform/contract/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/validateContract/v1" elementFormDefault="qualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/contract/v1" schemaLocation="../domain/platformContract.xsd"/>
+	<xsd:element name="validateContractRequest" type="tns:ValidateContractRequest" nillable="true"/>
+	<xsd:element name="validateContractResponse" type="tns:ValidateContractResponse" nillable="true"/>
+	<xsd:complexType name="ValidateContractRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation>Request Header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="contractRec" type="btcontract:ContractRec">
+				<xsd:annotation>
+					<xsd:documentation>Contract Record</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ValidateContractResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="contractResponseRec" type="btcontract:ContractResponseRec" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Combines all the data about the Contract with status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

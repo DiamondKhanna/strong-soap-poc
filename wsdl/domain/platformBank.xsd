@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:btbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Standard model for bank data. Shared accross standard product modules.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:simpleType name="IBANIdentifier">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> The International Bank Account Number (IBAN) is an international standard for identifying bank accounts across national borders. It consists of a four character header comprising an ISO 3166-1 alpha-2 country code, followed by two check digits that are calculated using a mod-97 technique and a country-specific Basic Bank Account Number (BBAN) of up to thirty alphanumeric characters.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-zA-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BICIdentifier">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> ISO 9362 (also known as SWIFT-BIC, BIC code, SWIFT ID or SWIFT code) is a standard format of Business Identifier Codes approved by the International Organization for Standardization (ISO)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ABAIdentifier">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Nine digit bank routing number code, used in the United States</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{9,9}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BSBIdentifier">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Six digit bank sort code, used in Australia</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{6,6}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="UKSortCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Six digit bank sort code, used in UK</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{6,6}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CNTransitCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Eight digit bank sort code (with seperator), used in Canada</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{5,5}-[0-9]{3,3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:group name="BankDetails">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Bank name and id. Id may be specified using ABA or BIC elements for backwards compatibility or use bank identifier element for more flexibilty.</xsd:documentation>
+				</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="bankName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Bank name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="multiBankIndicator" type="xsd:string"  minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> MultiBankIndicator</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BIC" type="tns:BICIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ISO 9362 (also known as SWIFT-BIC, BIC code, SWIFT ID or SWIFT code) is a standard format of Business Identifier Codes approved by the International Organization for Standardization (ISO)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+				<xsd:element name="cashReportingABA" type="tns:ABAIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ABA number is a nine digit bank routing number code, used in the United States</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fedWireABA" type="tns:ABAIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ABA number is a nine digit bank routing number code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ABA" type="tns:ABAIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ABA number is a nine digit bank routing number code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		
+			<xsd:element name="bankId" type="tns:BankIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank identifier includes type and sort code. Type may be ABA, BIC or other such as BSB for Austrailian market.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="BankData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Accounts withing webSeries are assigned an internal bank code. Internal bank code is resolved based on entry in BANKCODE table. Internal bank codes are configured with ABA and/or BIC identifiers</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="bankCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> WebSeries bank code. Each account defined in WebSeries is associated with a bank code (BANK table)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="btbank:BankDetails"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BankDataFull">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Extends basic bank structure to add address information.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="btbank:BankData">
+				<xsd:group ref="btws:Address2">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en"> Bank adrress fields. All may be optional.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:group>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="BankIdentifier">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" default="ABA" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Identifies the type/format used for the bank sort code. Values include: ABA, BIC, BSB</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortCode" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Identifies an individual bank based on the format indictated by the type element.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

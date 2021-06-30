@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/user/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/user/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" schemaLocation="../domain/platformUser.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="../domain/platformEntitlements.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for managing WebSeries Users.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="createUserRequest" type="tns:CreateUserRequest" nillable="true"/>
+	<xsd:element name="createUserResponse" type="tns:CreateUserResponse" nillable="true"/>
+	<xsd:element name="updateUserRequest" type="tns:UpdateUserRequest" nillable="true"/>
+	<xsd:element name="updateUserResponse" type="tns:UpdateUserResponse" nillable="true"/>
+	<xsd:element name="deleteUserRequest" type="tns:DeleteUserRequest" nillable="true"/>
+	<xsd:element name="disableUserRequest" type="tns:DisableUserRequest" nillable="true"/>
+	<xsd:element name="disableUserBySSOIdRequest" type="tns:DisableUserBySSOIdRequest" nillable="true"/>
+	<xsd:element name="deleteUserResponse" type="tns:DeleteUserResponse" nillable="true"/>
+	<xsd:element name="disableUserResponse" type="tns:DisableUserResponse" nillable="true"/>
+	<xsd:element name="disableUserBySSOIdResponse" type="tns:DisableUserBySSOIdResponse" nillable="true"/>
+	<xsd:element name="approveUserRequest" type="tns:ApproveUserRequest" nillable="true"/>
+	<xsd:element name="approveUserResponse" type="tns:ApproveUserResponse" nillable="true"/>
+	<xsd:element name="userDetailRequest" type="tns:UserDetailRequest" nillable="true"/>
+	<xsd:element name="userDetailResponse" type="tns:UserDetailResponse" nillable="true"/>
+	<xsd:element name="userListRequest" type="tns:UserListRequest" nillable="true"/>
+	<xsd:element name="userListResponse" type="tns:UserListResponse" nillable="true"/>
+	<xsd:element name="userSelfServiceRequest" type="tns:UserSelfServiceRequest" nillable="true"/>
+	<xsd:element name="userSelfServiceResponse" type="tns:UserSelfServiceResponse" nillable="true"/>
+	<xsd:element name="restoreUserRequest" type="tns:RestoreUserRequest" nillable="true"/>
+	<xsd:element name="restoreUserResponse" type="tns:RestoreUserResponse" nillable="true"/>
+	<xsd:complexType name="CreateUserRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Create a new user</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="user" type="btuser:User" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user to be created.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CreateUserResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateUserRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update a user</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="user" type="btuser:User" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user to be updated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="updateRoles" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if request includes updated list of user roles. It should be set to false if only user attributes are being updated. When updating user roles the list supplied will replcae the existing role list. All roles that the user should have after the update should be supplied including previously assigned roles.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateUserResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteUserRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more users (sets DL status)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="btuser:UserIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the users to be deleted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteUserResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+		<xsd:complexType name="DisableUserRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Disable one or more users </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="btuser:UserIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the users to be deleted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DisableUserResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+		<xsd:complexType name="DisableUserBySSOIdRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Disable one or more users </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="btuser:DisableUserBySSOItem" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the users to be deleted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DisableUserBySSOIdResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ApproveUserRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Approve one or more users (sets AP status)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="btuser:UserIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the users to be deleted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApproveUserResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserDetailRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get user details based on Id</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="btuser:UserIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User id to fetch details for.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserDetailResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="user" type="btuser:User">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of users which can be actioned</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="singleSignOnId" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userName" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="user" type="btuser:User" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserSelfServiceRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Allows user to change some settings directly without administrative approval. User is identified based on user data in standard request header.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>User's full name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="emailAddress" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>User's email address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="settings" type="btws:Setting" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of group level settings. Each setting is a name/value pair.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserSelfServiceResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreUserRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Restore one or more deleted users</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="btuser:UserIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the users to be restored.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientMaintenance" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This should be set to true if requesting user is acting on behalf of a client, i.e. requesting user is a bank administrator (CBAO or CSU) and target user is customer user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreUserResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

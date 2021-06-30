@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:complexType name="UserIdentifier">
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Key into the UserGroup table. User group represents the company user associated with or for internal users the customer service group the user belongs to.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>WebSeries identfier for user. Unique only within group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="updateCount" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Used for optimistic locking</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+		<xsd:complexType name="DisableUserBySSOItem">
+		<xsd:sequence>
+			<xsd:element name="SSOId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>WebSeries identfier for user. Unique only within group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="productSettings" type="btws:ProductSettings" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of product specific settings. Each setting is a name/value pair.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="updateCount" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Used for optimistic locking</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="UserInfo">
+		<xsd:sequence>
+			<xsd:element name="userIdentifier" type="tns:UserIdentifier">
+				<xsd:annotation>
+					<xsd:documentation/>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Group to which user group belongs (parent entity or CBAO for bank users).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>User's full name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="singleSignOnId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Globally unique SSO Id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="password" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Password stored in one way encrypted format.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="salt" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>User-specific random data appended to the password to prevent dictionary and rainbow-table attacks.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="passwordChangeDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date and time last password change was performed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Users current status (e.g. EN - Entered, AP - Approved)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statusDescription" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Localized string describing users status</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="disabled" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>True if user has been temporarily disabled</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="emailAddress" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>User's email address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approverType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Approver type used in panel approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="languageCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Language code, default 'en'</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="countryCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Country code, default 'US''</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="locale" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Locale for the user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="timezone" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>timezone Id</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="strikes" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Number of failed logon attempts</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="administrator" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether this is an admin user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="applicationUser" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether this is an application user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="superUser" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether this is a super user (if enabled for the group)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="applicationSuperUser" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether this is an application super user (all entitlements)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="mobileEnabled" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether this is user can access through mobile channel</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="mobileNotifications" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether this is user gets push notifications through mobile channel</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="confidentialImportsEnabled" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether this is user can import confidential payments.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="settings" type="btws:Setting" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of group level settings. Each setting is a name/value pair.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="productSettings" type="btws:ProductSettings" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of product specific settings. Each setting is a name/value pair.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="preferences" type="btws:Settings" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of preferences. Preferences differ from settings in that they are controled by end-user themselves, while settings are determined by system administrators. Each preference is a name/value pair.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="roles" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of roles assigned to the user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="rolesAssignmentAction" type="tns:RolesAssignmentAction" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specify what operaton should be for the roles to the user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			
+		</xsd:sequence>
+		<xsd:anyAttribute processContents="lax">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Enable extensible list of attributes.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:anyAttribute>
+	</xsd:complexType>
+	<xsd:complexType name="User">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of user including audit data</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:UserInfo">
+				<xsd:sequence>
+					<xsd:element name="entered" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data entry</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lastModified" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data modification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="approved" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company approval</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="deleted" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company deletion</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lastTouchedByApplication" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Which application last entered or modified the user.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="RolesAssignmentAction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used to indicate the operation corresponding to the roles.Values for this attribute are:(A)dd, (R)eplace, (D)elete..
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/>
+			<xsd:enumeration value="R"/>
+			<xsd:enumeration value="D"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

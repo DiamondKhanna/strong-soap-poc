@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/estatement/v1" 
+xmlns:estmt="http://www.bottomline.com/webseries/schema/ps/platform/estatement/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/estatement/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/estatement/v1" schemaLocation="../domain/platformEStatement.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:element name="statementListRequest" type="tns:StatementListRequest"/>
+	<xsd:element name="statementListResponse" type="tns:StatementListResponse"/>
+	<xsd:element name="statementImageRequest" type="tns:StatementImageRequest"/>
+	<xsd:element name="statementImageResponse" type="tns:StatementImageResponse"/>
+	<xsd:complexType name="StatementListRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountSearch" type="btacct:SingleExternalAccountSearch">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account criteria for check inquiry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementType" type="btsearch:SingleValueSearchField">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of statement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementDateRange" type="btsearch:DateRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date range for  statements</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StatementListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementInfo" type="estmt:EStatementInfo" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account criteria for check inquiry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StatementImageRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="account" type="btacct:ExternalAccountId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account criteria for check inquiry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of statement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementImageID" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifier used to retrieve statement in binary (e.g. PDF) format</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accept" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional list of preferred mime types (e.g. application/pdf or image/jpeg). Multiple values may be specified with comma delimited list much like HTTP Accept header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date range for  statements</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StatementImageResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementImageData" type="btws:Image">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Encoded binary data containing statement image. Required xmime:contentType attribute will contain mime type for image data.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

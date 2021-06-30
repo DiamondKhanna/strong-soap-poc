@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:attribute name="inclusive" type="xsd:boolean" default="true">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Optional attribute for range. If true range is inclusive (e.g. >=) and if false it is exclusive (e.g. >)</xsd:documentation>
+		</xsd:annotation>
+	</xsd:attribute>
+	<xsd:complexType name="SearchCriteria">
+		<xsd:sequence>
+			<xsd:element name="searchType" type="xsd:string"/>
+			<xsd:element name="inquiryId" type="xsd:integer" nillable="true"/>
+			<xsd:element name="action" type="btws:ActionData" nillable="true"/>
+			<xsd:element name="callingAction" type="btws:ActionData" minOccurs="0"/>
+			<xsd:element name="searchFields" type="btsearch:SearchField" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="sortFields" type="btsearch:SortField" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="customFilters" type="btsearch:CustomFilter" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SearchField">
+		<xsd:sequence>
+			<xsd:element name="fieldName" type="xsd:string"/>
+			<xsd:element name="dataType" type="xsd:string"/>
+			<xsd:element name="operator" type="xsd:string"/>
+			<xsd:element name="fieldValue" type="xsd:string" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SortField">
+		<xsd:sequence>
+			<xsd:element name="fieldName" type="xsd:string"/>
+			<xsd:element name="sortOrder" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CustomFilter">
+		<xsd:sequence>
+			<xsd:element name="filterName" type="xsd:string"/>
+			<xsd:element name="filterParam" type="xsd:string" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="QueryCriteria">
+		<xsd:sequence>
+			<xsd:element name="queryType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="inquiryId" type="xsd:integer"/>
+			<xsd:element name="action" type="btws:ActionData"/>
+			<xsd:element name="queryField" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="queryValue" type="xsd:string"/>
+			<xsd:element name="customFilters" type="btsearch:CustomFilter" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SortInfo">
+		<xsd:sequence>
+			<xsd:element name="precedence" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specifies order in which sorts are applied.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortDirection" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specifies direction of sort: ASC or DESC</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TextSearchField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Type that represents search criteria for a single text field. Usage of wildcard combinations allows for contains, starts with, ends with and exact match operations.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:string" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Value used as basis for a search; normally entered by an end user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="wildcardAfterValue" type="xsd:boolean" default="true">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates whether wildcard operator is applied at end of specified value. Defaults to true.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="wildcardBeforeValue" type="xsd:boolean" default="true">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates whether wildcard operator is applied at begining of specified value. Defaults to true</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultiValueSearchField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Type that represents search criteria for a text field using multiple values. Operator is assumed to be IN(value1, value2, ...).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Value used as basis for a search; normally entered/selected by an end user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SingleValueSearchField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Type that represents search criteria for a text field using single value and no wildcards. Operator is assumed to be Equals.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:string" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Value used as basis for a search; normally entered/selected by an end user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SingleLongSearchField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Type that represents search criteria for a long field using single value and no wildcards. Operator is assumed to be Equals.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:long" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Value used as basis for a search; normally entered/selected by an end user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultiLongSearchField">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Type that represents search criteria for a long field using multiple values. Operator is assumed to be IN(value1, value2, ...).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:long" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Value used as basis for a search; normally entered/selected by an end user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LongRange">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used to specify search criteria for long fields. If only fromValue specified the operator is assumed to be "greater than or equal to". If only toValue specified the operator is assumed to be "less than or equal to". Optional inclusive attribute can be set to false for exclusive search. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fromValue" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper lower bound of amount range</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="toValue" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper range for amount search.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:inclusive"/>
+	</xsd:complexType>
+	<xsd:complexType name="DateRange">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used to specify search criteria for date fields. If only fromDate specified the operator is assumed to be "greater than or equal to". If only toDate specified the operator is assumed to be "less than or equal to".Optional inclusive attribute can be set to false for exclusive search. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fromDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper lower bound of date range</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="toDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper range for date search.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:inclusive"/>
+	</xsd:complexType>
+	<xsd:complexType name="AmountRange">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used to specify search criteria for amount fields. If only fromAmount specified the operator is assumed to be "greater than or equal to". If only toAmount specified the operator is assumed to be "less than or equal to". Optional inclusive attribute can be set to false for exclusive search. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fromAmount" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper lower bound of amount range</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="toAmount" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper range for amount search.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:inclusive"/>
+	</xsd:complexType>
+	<xsd:complexType name="TimestampRange">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used to specify search criteria for timestamp fields. If only fromTimestamp specified the operator is assumed to be "greater than or equal to". If only toTimestamp specified the operator is assumed to be "less than or equal to". Optional inclusive attribute can be set to false for exclusive search. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fromTimestamp" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper lower bound of dateTime range</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="toTimestamp" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional field used to specify upper range for dateTime search.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:inclusive"/>
+	</xsd:complexType>
+</xsd:schema>

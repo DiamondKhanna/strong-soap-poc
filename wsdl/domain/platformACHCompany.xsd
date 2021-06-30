@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/achcompany/v1" xmlns:btbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btach="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/achcompany/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="./platformEntitlements.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="./platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="./platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" schemaLocation="./platformBank.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" schemaLocation="./platformPaymentACH.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="./platformUserGroup.xsd"/>
+	<xsd:complexType name="TaxAuthority">
+		<xsd:annotation>
+			<xsd:documentation>Name of tax authority</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute ref="btent:provisioningAction" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="ChildSupportAgency">
+		<xsd:annotation>
+			<xsd:documentation>Name of child support agency</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute ref="btent:provisioningAction" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyIdentifier">
+		<xsd:sequence>
+			<xsd:element name="companyId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH company ID</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companyName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH company name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clearingSystem" type="xsd:string" default="NACHA" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Clearing system used for payments associated with this company. If not specified the default will be NACHA.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This represents a client organization (entreprise or a subsidiary). Within WebSeries a company is always associated with a user group. It is optional within this type because user group may be supplied by enclosing structure.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Internal Webseries ID assigned at creation</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="updateCount" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Used for optimistic locking</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyIdWithType">
+		<xsd:annotation>
+			<xsd:documentation>ACH company id and list of payment types. This structure may be used in multiple operations, e.g. assign/unssign company and type combinations to a child user group.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:ACHCompanyIdentifier">
+				<xsd:sequence>
+					<xsd:element name="type" type="xsd:string" minOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>List of payment types. In this case product and function are implied and do not need to be specified.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyIdWithTypes">
+		<xsd:annotation>
+			<xsd:documentation>ACH company id and payment type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="company" type="tns:ACHCompanyIdentifier" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation>Info used to identify ACH company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>List of payment types. In this case product and function are implied and do not need to be specified.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Originator">
+		<xsd:annotation>
+			<xsd:documentation>Originator information for ACH company</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:group ref="btws:Address1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Originator address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:group>
+			<xsd:element name="bank" type="btbank:BankDataFull">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Originator bank information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currency" type="btamt:CurrencyCode">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Originating currency</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankFXRefIndicator" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Originating bank FX Ref Indicator. Currently values "1", "2" or "3" accepted </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DestinationInfo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Destination country and currency codes</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="country" type="btamt:CountryCode" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Destination country</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currency" type="btamt:CurrencyCode">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Destination currency</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CorrespondentBanks">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">List of correspondent banks for IAT</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="corrBankInfo" type="btbank:BankDataFull" maxOccurs="5"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyInfo">
+		<xsd:complexContent>
+			<xsd:extension base="tns:ACHCompanyIdentifier">
+				<xsd:sequence>
+					<xsd:element name="descriptionData" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Description data</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="companyFullName" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">ACH company full name</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					
+					<xsd:element name="submissionType" type="xsd:string" minOccurs="0"  default="0">
+					<!-- Used When Clearing System is UK-BACS -->
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Submission Type - applicable for BACS ONLY</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="status" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Status of ACH Company, e.g. entered (EN), deleted (DL)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="originatorInfo" type="tns:Originator" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Originator address and bank information</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="offsetAccount" type="btacct:AccountDataExtended" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Offset account details</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="offsetType" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Offset type</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="correspondentBanks" type="tns:CorrespondentBanks" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of correspondent banks</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="destinationInfo" type="tns:DestinationInfo" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Destination country and currency</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="returnsInfo" type="btacct:AccountData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Returns bank info</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="settings" type="btws:Setting" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional list of settings for company. May be used carry additional data required by specific implementations.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:anyAttribute processContents="lax">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Enable extensible list of attributes.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:anyAttribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyData">
+		<xsd:complexContent>
+			<xsd:extension base="tns:ACHCompanyInfo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Adds audit inofrmation</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="entered" type="btws:AuditItem">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data entry</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lastModified" type="btws:AuditItem">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data modification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="deleted" type="btws:AuditItem">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company deletion</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Agencies">
+		<xsd:sequence>
+			<xsd:element name="taxAuthority" type="tns:TaxAuthority" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Tax authority names</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="childSupportAgency" type="tns:ChildSupportAgency" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child support agency names</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyWithEntitlements">
+		<xsd:sequence>
+			<xsd:element name="companyInfo" type="tns:ACHCompanyInfo" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of transaction types or reports this ach company may be used with grouped by product</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionTypes" type="btent:TypesByProduct" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of transaction types or reports this ach company may be used with grouped by product</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="agencies" type="tns:Agencies" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of tax authorities and/or child support agencies for this ACH company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fileImportClass" type="tns:FileImportEntryClassInfo" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List entry classes supported for file import</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="btent:roleId" use="optional"/>
+		<xsd:attribute ref="btent:provisioningAction" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyBaseTypeId">
+		<xsd:sequence>
+			<xsd:element name="paymentType" type="xsd:string"/>
+			<xsd:element name="paymentTypeCode" type="xsd:string"/>
+			<xsd:element name="paymentTypeDescription" type="xsd:string"/>
+			<xsd:element name="entryClass" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="compEntryDescription" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Internal Webseries ID assigned at creation</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="compInfoId" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Internal Webseries ID assigned to ACH company at creation</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="updateCount" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Used for optimistic locking</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyBaseType">
+		<xsd:complexContent>
+			<xsd:extension base="tns:ACHCompanyBaseTypeId">
+				<xsd:sequence>
+					<xsd:element name="status" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="override" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="compDiscData" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="originator" type="tns:Originator" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Override of originator details</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="offsetAccount" type="btacct:AccountDataExtended" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Override of offset account details</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="offsetType" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Override of offset type</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="clearingSystem" type="xsd:string" default="NACHA" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Override of clearing system,</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="entered" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data entry</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lastModified" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data modification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="deleted" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company deletion</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FileImportEntryClassId">
+		<xsd:sequence>
+			<xsd:element name="entryClass" type="xsd:string"/>
+			<xsd:element name="entryDescription" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="compInfoId" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Internal Webseries ID assigned to ACH company at creation</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="updateCount" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Used for optimistic locking</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="FileImportEntryClassInfo">
+		<xsd:complexContent>
+			<xsd:extension base="tns:FileImportEntryClassId">
+				<xsd:sequence>
+					<xsd:element name="compDiscData" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="compDescDateOption" type="xsd:string"/>
+					<xsd:element name="compDescDateValue" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="effectiveDaysMin" type="xsd:integer" minOccurs="0"/>
+					<xsd:element name="effectiveDaysMax" type="xsd:integer" minOccurs="0"/>
+					<xsd:element name="recnum" type="xsd:integer" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute ref="btent:provisioningAction" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FileImportEntryClass">
+		<xsd:complexContent>
+			<xsd:extension base="tns:FileImportEntryClassInfo">
+				<xsd:sequence>
+					<xsd:element name="entered" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data entry</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lastModified" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company data modification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="deleted" type="btws:AuditItem" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of ACH company deletion</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

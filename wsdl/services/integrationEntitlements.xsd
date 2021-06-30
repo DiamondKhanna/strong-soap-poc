@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/entitlements/v1"  xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btentitle="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:btprov="http://www.bottomline.com/webseries/schema/ps/platform/provisioning/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/entitlements/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" schemaLocation="../domain/platformUser.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="../domain/platformEntitlements.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/provisioning/v1" schemaLocation="../domain/platformProvisioning.xsd"/>
+	<xsd:element name="GetEntitledProductsRequest" type="tns:GetEntitledProductsRequest" nillable="true"/>
+	<xsd:element name="GetEntitledProductsResponse" type="tns:GetEntitledProductsResponse" nillable="true"/>
+	<xsd:element name="GetEntitledActionsRequest" type="tns:GetEntitledActionsRequest" nillable="true"/>
+	<xsd:element name="GetEntitledActionsResponse" type="tns:GetEntitledActionsResponse" nillable="true"/>
+	<xsd:element name="GetEntitlementsRequest" type="tns:GetEntitlementsRequest" nillable="true"/>
+	<xsd:element name="GetEntitlementsResponse" type="tns:GetEntitlementsResponse" nillable="true"/>
+	<xsd:element name="UserProvisioningEntitlementsRequest" type="tns:UserProvisioningEntitlementsRequest" nillable="true"/>
+	<xsd:element name="UserProvisioningEntitlementsResponse" type="tns:UserProvisioningEntitlementsResponse" nillable="true"/>
+	<xsd:complexType name="GetEntitledProductsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="externalOnly" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If true response will contain only External Products</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetEntitledProductsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="entitledProduct" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Product which the user has entitlement for</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetEntitledActionsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="product" type="xsd:string"/>
+			<xsd:element name="function" type="xsd:string"/>
+			<xsd:element name="type" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetEntitledActionsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="entitledAction" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Action which the user has entitlement for</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetEntitlementsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="externalOnly" type="xsd:boolean" default="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If true response will contain only External Products</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetEntitlementsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="entitlements" type="btentitle:EntitlementDataList" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of entitlements held by this user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserProvisioningEntitlementsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get user details and entitlements based on Id</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="btuser:UserIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User id to fetch details for.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="externalOnly" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If true response will contain only External Products</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserProvisioningEntitlementsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entitlements" type="btprov:ActionsByProduct" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Entitlements with restrictions organized by product.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="./platformUserGroup.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="./platformEntitlements.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="./platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" schemaLocation="./platformBank.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Standard model for account data. Shared across standard product modules.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:group name="AccountDetails">
+		<xsd:sequence>
+			<xsd:element name="accountName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Account name assigned by bank</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientAccountName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Account name assigned by client</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currencyCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Currency of the account represented by 3 dijit currency code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountType" type="tns:AccountType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account type e.g. DD, GL, SV</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank name associated with bank code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="regionalBAN" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Regional Bank Account number associated with account number. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="billingAccount" type="btws:BillingAccount" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The Billing Account for this account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+			<xsd:group ref="tns:BankDefinedFieldsGroup" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="AccountId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Uniquely identifies an account.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="accountNumber" type="xsd:string" nillable="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Account number. This needs to be combined with bank code to uniquely identify an account. Account number not present for DRAFTS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankCode" type="xsd:string" nillable="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank Code associated with the account number. These two fileds together uniquely identify the account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupId" type="btug:GroupId" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This represents either a client organization (entreprise or a subsidiary).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="btent:provisioningAction" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="ExternalAccountId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Identifies an account outside of WebSeries context.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="accountNumber" type="xsd:string" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Account number. This needs to be combined with bank identifier (either ABA, BIC or other sort code) to uniquely identify an account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankId" type="btbank:BankIdentifier" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountData">
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountId">
+				<xsd:group ref="tns:AccountDetails"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AccountDataWithSortCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Extended account data structure.This includes sort code in addition to the current details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank details for the bank associated with account (by bank code) including name and codes (internal, BIC, ABA)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+				<xsd:element name="countryCode" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="bankDetails" type="tns:ExternalAccountId" >
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">account and bankdetail like the sortcode</xsd:documentation>
+				</xsd:annotation>
+				</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AccountDataExtended">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Extended account data structure.Includes bank details based on bank code associated with account.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank details for the bank associated with account (by bank code) including name and codes (internal, BIC, ABA)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="BIC" type="btbank:BICIdentifier" minOccurs="0"/>
+					<xsd:element name="ABA" type="btbank:ABAIdentifier" minOccurs="0"/>
+					<xsd:element name="settings" type="btws:Setting" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional list of settings for account. May be used carry additional data required by specific implementations.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="productSettings" type="btws:ProductSettings" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of product specific settings. Each setting is a name/value pair.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AccountList">
+		<xsd:sequence>
+			<xsd:element name="accounts" type="tns:AccountData" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountSearch">
+		<xsd:sequence>
+			<xsd:element name="account" type="tns:AccountId" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If account number not specified request is for all user's accounts.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SingleExternalAccountSearch">
+		<xsd:sequence>
+			<xsd:element name="account" type="tns:ExternalAccountId" >
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account identifer</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultiExternalAccountSearch">
+		<xsd:sequence>
+			<xsd:element name="account" type="tns:ExternalAccountId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account identifer</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortInfo" type="btsearch:SortInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional sort information. If not supplied this field is not used for sorting</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="AccountType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Valid values for account type</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:complexType name="AccountDataFull">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Account data structure which includes all current information with ability to add custom settings and attributes</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountDataExtended">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank details for the bank associated with account (by bank code) including name and codes (internal, BIC, ABA)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:group ref="btws:Address4" minOccurs="0"/>
+					<xsd:element name="status" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="tranType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="branchId" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="tranCodeSet" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="fundingMethod" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="imageAccount" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="realTimeAccount" type="xsd:boolean" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute processContents="lax">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Enable extensible list of attributes. </xsd:documentation>
+					</xsd:annotation>
+				</xsd:anyAttribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AccountWithAudit">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Account data structure which includes all current information plus audit fields.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountDataFull">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank details for the bank associated with account (by bank code) including name and codes (internal, BIC, ABA)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="entered" type="btws:AuditItem">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of account data entry</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lastModified" type="btws:AuditItem">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of account data modification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="deleted" type="btws:AuditItem">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of account deletion</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AccountWithEntitlements">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Account data structure which includes all current information plus limits or restrictions on usage. Depending on placement these limits may be based on customer set up or indiidual user based on role</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountDataFull">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank details for the bank associated with account (by bank code) including name and codes (internal, BIC, ABA)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="transactionTypes" type="btent:TypesByProduct" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of transaction types or reports this account may be used with grouped by product</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="limits" type="btent:Restriction" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of limits or restrictions on the use of this account</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="btent:roleId" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AccountLimits">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Account data structure which includes basic info along with any limits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountId">
+				<xsd:sequence>
+					<xsd:element name="transactionTypes" type="btent:TypeWithLimits" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of account-level restriction sets of this account.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="BankDefinedFieldType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A data type of the additional bank defined account properties</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="35"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:group name="BankDefinedFieldsGroup">
+		<xsd:sequence>
+			<xsd:element name="bankDefinedField1" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField2" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField3" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField4" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField5" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField6" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField7" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField8" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField9" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="bankDefinedField10" type="tns:BankDefinedFieldType" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="AccountsForAction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Encapusulates a list of accounts which may be used with an Action (product/function/type/actionMode)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="action" type="btws:ActionData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Action Data (product/function/type/actionMode)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accounts" type="tns:AccountDataExtended" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of accounts which may be used with the specified action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="messages" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountEntitlements">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Account data structure which includes basic info along with any transaction types.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:AccountId">
+				<xsd:sequence>
+					<xsd:element name="transactionTypes" type="btent:TypesByProduct" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of transaction types or reports this account may be used with grouped by product.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

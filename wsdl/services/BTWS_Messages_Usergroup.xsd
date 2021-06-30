@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 2 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:btugmsg="http://www.bottomline.com/webseries/schema/is/message/usergroupmaint/v1" xmlns:btct="http://www.bottomline.com/webseries/schema/is/message/common/v1" xmlns:btugt="http://www.bottomline.com/webseries/schema/ps/tmaint/usergroup/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/usergroupmaint/v1" elementFormDefault="qualified" attributeFormDefault="qualified" version="1.0">
+	<!--Based on BTWS 7.0-->
+	<!--Last Updated 1/21/2011-->
+	<xs:import namespace="http://www.bottomline.com/webseries/schema/is/message/common/v1" schemaLocation="BTWS_Complex_Types_Common.xsd"/>
+	<xs:import namespace="http://www.bottomline.com/webseries/schema/ps/tmaint/usergroup/v1" schemaLocation="../domain/BTWS_Complex_Types_Usergroup.xsd"/>
+	<xs:element name="UserGroupMaintReq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MsgRqHeader" type="btct:MsgRqHeaderType"/>
+				<xs:choice>
+					<xs:element name="ClientUserGroup" type="btugt:ClientUserGroupType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="CloneUserGroup" type="btugt:CloneUserGroup" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UserGroupMaintRsp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MsgRqHeader" type="btct:MsgRqHeaderType"/>
+				<xs:element name="MsgRsp" type="btct:MsgRsp"/>
+				<xs:element name="ItemRsp" type="btugmsg:UserGroupMaintMsgRsp" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UserGroupEnquiryReq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MsgRqHeader" type="btct:MsgRqHeaderType"/>
+				<xs:choice>
+					<xs:element name="GetClientUserGroupReq" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="UserGroup" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attribute name="RequestType">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="GetClientUserGroupReq"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UserGroupEnquiryRsp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MsgRqHeader">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="btct:MsgRqHeaderType"/>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="MsgRsp" type="btct:MsgRsp"/>
+				<xs:choice>
+					<xs:element name="GetClientUserGroupRsp" type="btugt:ClientUserGroupType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="UserGroupMaintMsgRsp">
+		<xs:annotation>
+			<xs:documentation>Message Response to a maintenance request</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UserGroup">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="8"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Result" type="btct:MsgRsp"/>
+		</xs:sequence>
+		<xs:attribute name="Action">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="8"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>	
+</xs:schema>

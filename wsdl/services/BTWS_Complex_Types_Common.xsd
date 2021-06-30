@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 2 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:btct="http://www.bottomline.com/webseries/schema/is/message/common/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/common/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<!--Version 1.0-->
+	<!--Based on BTWS 7.0-->
+	<!--Last Updated 1/21/2011-->
+	<xs:complexType name="nameValuePair">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="nameValuePairList">
+		<xs:sequence>
+			<xs:element name="item" type="btct:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MsgRqHeaderType">
+		<xs:annotation>
+			<xs:documentation>Request message header</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UUID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Request identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReqApp" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identifies the requesting application.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ClientDateTime" type="xs:dateTime" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The date and time that the client application originated the message.
+YYYY-MM-DDTHH:mm:SS.uuuZ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Organization" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Indicates the organisational domain in which the client application is operating</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Version" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Version of the client application as set by the client.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ReqUser">
+				<xs:annotation>
+					<xs:documentation>Identifies the requesting user.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="UserGroupType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Indicates wether the user is a Bank Admin User or a Client User.  Valid values are CSU, CEU, or CU</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="3"/>
+									<xs:enumeration value="CU"/>
+									<xs:enumeration value="CEU"/>
+									<xs:enumeration value="CSU"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="UserGroup" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Identifies the user group of the requesting user.</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="8"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="UserID">
+							<xs:annotation>
+								<xs:documentation>The user ID of the requesting user.</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="8"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Password" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The password of the requesting user, used if the standard password authentication service is configured for internal testing</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Data" type="btct:nameValuePairList" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MsgRsp">
+		<xs:annotation>
+			<xs:documentation>Message Response to a maintenance request</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ResultCode" type="xs:string"/>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element name="Message" type="xs:string"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

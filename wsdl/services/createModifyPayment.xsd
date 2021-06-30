@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/payment/create/v1"
+	xmlns:btint="http://www.bottomline.com/webseries/schema/is/message/payment/v1"
+	xmlns:btach="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1"
+	xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1"
+	xmlns:btpay="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1"
+	xmlns:btwire="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1"
+	xmlns:btfraud="http://www.bottomline.com/webseries/schema/ps/platform/fraudscore/v1"
+	targetNamespace="http://www.bottomline.com/webseries/schema/is/message/payment/create/v1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	version="1.0">
+	<xsd:import
+		namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1"
+		schemaLocation="platformMessage.xsd" />
+	<xsd:import
+		namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1"
+		schemaLocation="../domain/platformAmount.xsd" />
+	<xsd:import
+		namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1"
+		schemaLocation="../domain/platformCommon.xsd" />
+	<xsd:import
+		namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1"
+		schemaLocation="../domain/platformPayment.xsd" />
+	<xsd:import
+		namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1"
+		schemaLocation="../domain/platformPaymentACH.xsd" />
+	<xsd:import
+		namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1"
+		schemaLocation="../domain/platformPaymentWire.xsd" />
+	<xsd:import
+		namespace="http://www.bottomline.com/webseries/schema/is/message/payment/v1"
+		schemaLocation="../services/integrationPayment.xsd" />
+	<xsd:import 
+		namespace="http://www.bottomline.com/webseries/schema/ps/platform/fraudscore/v1" 
+		schemaLocation="../domain/platformFraudScore.xsd"/>
+
+	<xsd:element name="createPaymentRequest" type="tns:CreatePaymentRequest" nillable="true"/>
+	<xsd:element name="createPaymentResponse" type="tns:CreatePaymentResponse" nillable="true"/>
+	<xsd:element name="modifyPaymentRequest" type="tns:ModifyPaymentRequest" nillable="true"/>
+	<xsd:element name="modifyPaymentResponse" type="tns:ModifyPaymentResponse" nillable="true"/>
+
+	<xsd:complexType name="CreatePaymentRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Base attributes for
+				creating a payment.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard
+						request fields
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="saveIncomplete" type="xsd:boolean"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional parameter
+						(defaults to false). Set to true when data is incomplete.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="saveWithWarnings" type="xsd:boolean"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional parameter
+						(defaults to false). Set to true when resubmitting items returned
+						with warnings.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OBId" type="xsd:string"  minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Open Banking Unique Identifier</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice id="paymentCreateData">
+				<xsd:element name="transfer" type="btwire:Transfer"></xsd:element>
+				<xsd:element name="cashConcentration" type="btach:CashConcentration"></xsd:element>
+				<xsd:element name="cashConcentrationDisbursement" type="btach:CashConcentrationDisbursement"></xsd:element>
+				<xsd:element name="cashDisbursement" type="btach:CashDisbursement"></xsd:element>
+				<xsd:element name="childSupportPayment" type="btach:ChildSupportPayment"></xsd:element>
+				<xsd:element name="corporateCollection" type="btach:CorporateCollection"></xsd:element>
+				<xsd:element name="consumerCollection" type="btach:ConsumerCollection"></xsd:element>
+				<xsd:element name="consumerPayment" type="btach:ConsumerPayment"></xsd:element>
+				<xsd:element name="corporateVendorPayment" type="btach:CorporateVendorPayment"></xsd:element>
+				<xsd:element name="wirePayment" type="btwire:WirePayment"></xsd:element>
+				<xsd:element name="destroyedCheck" type="btach:DestroyedCheck"></xsd:element>
+				<xsd:element name="IATPayment" type="btach:IATPayment"></xsd:element>
+				<xsd:element name="payrollPayment" type="btach:PayrollPayment"></xsd:element>
+				<xsd:element name="telephoneInitiatedCollection" type="btach:TelephoneInitiatedCollection"></xsd:element>
+				<xsd:element name="webInitiatedCollection" type="btach:WebInitiatedCollection"></xsd:element>
+				<xsd:element name="taxPayment" type="btach:TaxPayment"></xsd:element>
+				<xsd:element name="domesticWire" type="btwire:DomesticWire"></xsd:element>
+				<xsd:element name="domesticBranchWire" type="btwire:DomesticBranchWire"></xsd:element>
+				<xsd:element name="internationalWire" type="btwire:InternationalWire"></xsd:element>
+				<xsd:element name="internationalBranchWire" type="btwire:InternationalBranchWire"></xsd:element>
+				<xsd:element name="ACHPayment" type="btwire:ACHPayment"></xsd:element>
+				<xsd:element name="noticeToReceive" type="btwire:NoticeToReceive"></xsd:element>
+				<xsd:element name="draft" type="btwire:Draft"></xsd:element>
+				<xsd:element name="multiBankPayment" type="btwire:MultiBankPayment"></xsd:element>
+				<xsd:element name="institutionalTransfer" type="btwire:InstitutionalTransfer"></xsd:element>
+				<xsd:element name="drawdown" type="btwire:Drawdown"></xsd:element>
+				<xsd:element name="billPay" type="btwire:BillPay"></xsd:element>
+				<xsd:element name="nachaFileImport" type="btach:NachaFileImport"></xsd:element>
+				<xsd:element name="fasterPayment" type="btach:FasterPayment"></xsd:element>
+			</xsd:choice>
+			<xsd:element name="fraudScoreContext" type="btfraud:FraudScoreContext" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fraud Score Context</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ModifyPaymentRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Base attributes for
+				modifying a payment.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard
+						request fields
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="saveIncomplete" type="xsd:boolean"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional parameter
+						(defaults to false). Set to true when data is incomplete.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="saveWithWarnings" type="xsd:boolean"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional parameter
+						(defaults to true). Set to true when resubmitting items returned
+						with warnings.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice id="paymentModifyData">
+				<xsd:element name="transfer" type="btwire:Transfer"></xsd:element>
+				<xsd:element name="cashConcentration" type="btach:CashConcentration"></xsd:element>
+				<xsd:element name="cashConcentrationDisbursement" type="btach:CashConcentrationDisbursement"></xsd:element>
+				<xsd:element name="cashDisbursement" type="btach:CashDisbursement"></xsd:element>
+				<xsd:element name="childSupportPayment" type="btach:ChildSupportPayment"></xsd:element>
+				<xsd:element name="corporateCollection" type="btach:CorporateCollection"></xsd:element>
+				<xsd:element name="consumerCollection" type="btach:ConsumerCollection"></xsd:element>
+				<xsd:element name="consumerPayment" type="btach:ConsumerPayment"></xsd:element>
+				<xsd:element name="corporateVendorPayment" type="btach:CorporateVendorPayment"></xsd:element>
+				<xsd:element name="wirePayment" type="btwire:WirePayment"></xsd:element>
+				<xsd:element name="destroyedCheck" type="btach:DestroyedCheck"></xsd:element>
+				<xsd:element name="IATPayment" type="btach:IATPayment"></xsd:element>
+				<xsd:element name="payrollPayment" type="btach:PayrollPayment"></xsd:element>
+				<xsd:element name="telephoneInitiatedCollection" type="btach:TelephoneInitiatedCollection"></xsd:element>
+				<xsd:element name="webInitiatedCollection" type="btach:WebInitiatedCollection"></xsd:element>
+				<xsd:element name="taxPayment" type="btach:TaxPayment"></xsd:element>
+				<xsd:element name="domesticWire" type="btwire:DomesticWire"></xsd:element>
+				<xsd:element name="domesticBranchWire" type="btwire:DomesticBranchWire"></xsd:element>
+				<xsd:element name="internationalWire" type="btwire:InternationalWire"></xsd:element>
+				<xsd:element name="internationalBranchWire" type="btwire:InternationalBranchWire"></xsd:element>
+				<xsd:element name="ACHPayment" type="btwire:ACHPayment"></xsd:element>
+				<xsd:element name="noticeToReceive" type="btwire:NoticeToReceive"></xsd:element>
+				<xsd:element name="draft" type="btwire:Draft"></xsd:element>
+				<xsd:element name="multiBankPayment" type="btwire:MultiBankPayment"></xsd:element>
+				<xsd:element name="institutionalTransfer" type="btwire:InstitutionalTransfer"></xsd:element>
+				<xsd:element name="drawdown" type="btwire:Drawdown"></xsd:element>
+				<xsd:element name="billPay" type="btwire:BillPay"></xsd:element>
+				<xsd:element name="nachaFileImport" type="btach:NachaFileImport"></xsd:element>
+				<xsd:element name="fasterPayment" type="btach:FasterPayment"></xsd:element>
+			</xsd:choice>
+			<xsd:element name="fraudScoreContext" type="btfraud:FraudScoreContext" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fraud Score Context</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CreatePaymentResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard
+						response fields including boolean result and optionally error
+						code
+						and error messages
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OBId" type="xsd:string"  minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Open Banking Unique Identifier</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="btpay:PaymentId" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Data used to
+						uniquely identify the payment within WebSeries
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroupSeqNumber" type="xsd:string"  minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">UsergroupSequence Number of the payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="valueDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Value Date of Payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tranDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Tran Date of Payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Status" type="xsd:string"  minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Status of the payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StatusDescription" type="xsd:string"  minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Status Description of the payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="warning" type="btmsg:Warning"
+				minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Response header for an item in a group of
+						actions that may include warnings.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ModifyPaymentResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard
+						response fields including boolean result and optionally error
+						code
+						and error messages
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="btpay:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Data used to
+						uniquely identify the payment within WebSeries
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="warning" type="btmsg:Warning"
+				minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Response header for an item in a group of
+						actions that may include warnings.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

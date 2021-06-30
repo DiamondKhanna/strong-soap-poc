@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" xmlns:btbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:btpay="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" elementFormDefault="qualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="./platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="./platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" schemaLocation="./platformBank.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" schemaLocation="./platformPayment.xsd"/>
+	<xsd:group name="NameAndId">
+		<xsd:annotation>
+			<xsd:documentation>Simple name and id combination</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="id" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:simpleType name="ChargesType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Valid values for account type</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BEN"/>
+			<xsd:enumeration value="SHA"/>
+			<xsd:enumeration value="OUR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BeneAccountType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Valid values for account type</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:complexType name="WireConfirmation">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Wire confirmation details (name and number)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="number" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Used to hold the first confirmation received by the receiving application, can be a SWIFT OSN or a payment system reference number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="timestamp" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Confirmation timestamp. System generated when confirmation number is populated in database.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="YesNoIndicator">
+		<xsd:annotation>
+			<xsd:documentation>yes/No value</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Y"/>
+			<xsd:enumeration value="N"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="MarketRateConventionIndicator">
+		<xsd:annotation>
+			<xsd:documentation>yes/No value</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="D"/>
+			<xsd:enumeration value="I"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EnteredAmountIndicator">
+		<xsd:annotation>
+			<xsd:documentation>D - Debit, C - Credit</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="D"/>
+			<xsd:enumeration value="C"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="BeneficiaryInfo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of payment beneficiary</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:group ref="btws:Address2" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FXTradeRequest">
+		<xsd:sequence>
+			<xsd:element name="paymentId" type="btpay:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation> Unique identifier for the payment associated with this request.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="quoteId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation> Identifier returned from Get Rate request. Identifies details which user is trading against.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FXTradeDetails">
+		<xsd:sequence>
+			<xsd:element name="paymentId" type="btpay:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation> Unique identifier for the payment associated with this request.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="quoteId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation> Identifier returned from Get Rate request. Identifies details which user is trading against.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="exchangeRate" type="btpay:ExchangeRate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">FX exchange rate used for this transaction</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="enteredAmountIndicator" type="tns:EnteredAmountIndicator" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">For FX payments this field holds the indicator of which amount was entered. D = Debit was entered, C = Credit (payment) was entered</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="contractId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Contract ID for exchange rate used. If the current rate and amount are applied to existing forward contract.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debitAmount" type="btamt:CurrencyAmount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Debit amount. Depending on entered amount indicator, this mat be amount entered by user or calculated based on quoted rate. May not be present if not entered and rate still TBD. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="creditAmount" type="btamt:CurrencyAmount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Credit amount. Depending on entered amount indicator, this mat be amount entered by user or calculated based on quoted rate. May not be present if not entered and rate still TBD. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FXInfo">
+		<xsd:sequence>
+			<xsd:element name="quoteId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifier for FX system for rate request</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="exchangeRate" type="btpay:ExchangeRate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">FX exchange rate used for this transaction</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="enteredAmountIndicator" type="tns:EnteredAmountIndicator" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">For FX payments this field holds the indicator of which amount was entered. D = Debit was entered, C = Credit (payment) was entered</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="marketConvention" type="tns:MarketRateConventionIndicator" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The market convention for the currency pair.  Will be stored as D for Direct and I for Indirect.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="contractId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Contract ID for exchange rate used. If the current rate and amount are applied to existing forward contract.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rateTBD" type="tns:YesNoIndicator" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">N - the exchange rate is not TBD, Y - the exchange rate is TBD</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rateQuoteExpiration" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Used when rate requested. Notes expiration time of current quote</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FXQuote">
+		<xsd:complexContent>
+			<xsd:extension base="tns:FXInfo">
+				<xsd:sequence>
+					<xsd:element name="paymentId" type="btpay:PaymentId">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Identifies payment for which rate has been requested.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="currentServerTime" type="xsd:dateTime" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Used to compare with rate quote expiration time and to detect latency between calculation of expiry time and display to client</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="debitAmount" type="btamt:CurrencyAmount" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Debit amount. Depending on entered amount indicator, this mat be amount entered by user or calculated based on quoted rate. May not be present if not entered and rate still TBD. </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Credit amount. Depending on entered amount indicator, this mat be amount entered by user or calculated based on quoted rate. May not be present if not entered and rate still TBD. </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FXData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">FX details for cross-currency wire payment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:FXInfo">
+				<xsd:sequence>
+					<xsd:element name="tradingUserId" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">User id for trade</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="rateTradedTimestamp" type="xsd:dateTime" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">When payment was traded using Get Rate</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="WireBeneficiary">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of payment beneficiary, which are optional as they are not required for DRAFT types.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:BeneficiaryInfo">
+				<xsd:sequence>
+					<xsd:element name="accountNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="accountType" type="tns:BeneAccountType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="WireOriginator">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of payment originator</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="id" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="idType" type="xsd:string" minOccurs="0"/>
+			<xsd:group ref="btws:Address2"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="WireBankDetails">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Bank identifier, name and address</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="bankIdentifier" type="btbank:BankIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies invividual bank by routing/sort code. Contains the sort code and type/format of that code. Supported types include: ABA, BIC, BSB</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Bank name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="btws:Address2"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="BeneInstruction">
+		<xsd:annotation>
+			<xsd:documentation>Single line of beneficiary instructions</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="35"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="InstructionsToBeneficiary">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Free form information provided from originator to beneficiary (OBI text)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="instruction" type="tns:BeneInstruction" minOccurs="0" maxOccurs="4"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="BankInstructionLine">
+		<xsd:annotation>
+			<xsd:documentation>Single line of bank to bank instructions</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="35"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BankInstructionCode">
+		<xsd:annotation>
+			<xsd:documentation>Code for SWIFT Field 23E, Instruction Code</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:length value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="BankToBankInstruction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Single line of bank to bank instructions</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="code" type="tns:BankInstructionCode" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code for SWIFT Field 23E</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="text" type="tns:BankInstructionLine" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Instructions to beneficiary bank </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BankToBankInstructions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Up to 4 lines of bank to bank instructions.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="instruction" type="tns:BankToBankInstruction" minOccurs="0" maxOccurs="4"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BankDetails">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Bank information for a beneficiry bank</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="bankName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Bank name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankIdentifier" type="btbank:BankIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies invividual bank by routing/sort code. Contains the sort code and type/format of that code. Supported types include: ABA, BIC, BSB</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="btws:Address2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Bank address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:group>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OrderingCustomer">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of customer requesting branch wire</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="idType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of id used to identify customer, e.g. passport number (CCPT), drivers license (DRLC), social security number (SOSE) </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="tns:NameAndId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Customer name and id </xsd:documentation>
+				</xsd:annotation>
+			</xsd:group>
+			<xsd:group ref="btws:Address2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Customer address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:group>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OrderingParty">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of ordering party for notice to receive (MT210)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="isFinancialInstitution" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates type of ordering party (FI or non-FI)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="customer" type="tns:OrderingCustomer"/>
+				<xsd:element name="financialInstitution" type="tns:BankDetails"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CustomerInformation">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of customer requesting branch wire</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:group ref="tns:NameAndId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Customer name and id </xsd:documentation>
+				</xsd:annotation>
+			</xsd:group>
+			<xsd:group ref="btws:Address2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Customer address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:group>
+			<xsd:element name="requestMethod" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Method used by customer to ake request, e.g. phone, fax, etc. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="RegulatoryReportingLine">
+		<xsd:annotation>
+			<xsd:documentation>Single line of regulatory reporting instructions (SWIFT 77b)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="35"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="RegulatoryReportingCode">
+		<xsd:annotation>
+			<xsd:documentation>Regulatory reporting code word (BENEFRES=Beneficiary Country Code, ORDERRES=Ordering Customer Country Code)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:length value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="RegulatoryReportingData">
+		<xsd:annotation>
+			<xsd:documentation>Statutory and/or regulatory information required by the authorities in the country of the Receiver or the Sender/originating customer.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="code" type="tns:RegulatoryReportingCode" minOccurs="0"/>
+			<xsd:element name="line" type="tns:RegulatoryReportingLine" minOccurs="0" maxOccurs="3"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BillerIdentification">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Basic information used to identify biller information</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string"/>
+			<xsd:element name="name" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="WirePaymentBase">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Common details of an individual wire payment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="btpay:PaymentDetailBase">
+				<xsd:sequence>
+					<xsd:element name="comment" type="btpay:Comment" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">User entered comment for the wire transaction</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="charges" type="tns:ChargesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Charges for this transaction: BEN, SHA, OUR</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="customerReference" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Customer reference number</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="firstConfirmation" type="tns:WireConfirmation" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Used to hold the first confirmation received by the receiving application, can be a SWIFT OSN or a payment system reference number.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="secondConfirmation" type="tns:WireConfirmation" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Used to hold the second confirmation received from the receiving application, can be a FedWiire reference number or a SWIFT OSN.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="priorityPayment" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional flag used to indicate a high priority payment.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="routingMethod" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Routing method chosen for payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:group name="Instructions">
+		<xsd:annotation>
+			<xsd:documentation>Instructions for bene ficiary and bank to bank</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="instructionsToBeneficiary" type="tns:InstructionsToBeneficiary" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankToBankInstructions" type="tns:BankToBankInstructions" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:group name="OptionalWireData">
+		<xsd:annotation>
+			<xsd:documentation>Optional data for wire payments</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="firstIntermediaryBank" type="tns:BankDetails" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="secondIntermediaryBank" type="tns:BankDetails" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:group ref="tns:Instructions"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:group name="BeneInfo">
+		<xsd:annotation>
+			<xsd:documentation>Beneficiary and beneficiary bank elements</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="beneficiary" type="tns:WireBeneficiary">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneficiaryBank" type="tns:BankDetails">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"/>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="DomesticWire">
+		<xsd:annotation>
+			<xsd:documentation>Domestic wire payment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"/>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:BeneInfo">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Beneficiary and beneficiary bank elements</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"/>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="originator" type="tns:WireOriginator">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"/>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:OptionalWireData">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional elements including intermediary bank info, instructions to beneficiary and banak to bank instructions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="DomesticBranchWire">
+		<xsd:annotation>
+			<xsd:documentation>Domestic wire payment initiated by branch on customer's behalf</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:DomesticWire">
+				<xsd:sequence>
+					<xsd:element name="customer" type="tns:CustomerInformation">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of customer requesting the wire payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="InternationalWire">
+		<xsd:annotation>
+			<xsd:documentation>International wire payment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"/>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:BeneInfo">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Beneficiary and beneficiary bank elements</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount" nillable="true">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer debit amount entered and rate not yet established</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="debitAmount" type="btamt:CurrencyAmount" nillable="true">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer credit amount entered and rate not yet established</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fxData" type="tns:FXData">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Information related to foreign exchange (F/X) required to complete this payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="originator" type="tns:WireOriginator">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Payment originator</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:OptionalWireData">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional elements including intermediary bank info, instructions to beneficiary and banak to bank instructions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="InternationalBranchWire">
+		<xsd:annotation>
+			<xsd:documentation>Domestic wire payment initiated by branch on customer's behalf</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:InternationalWire">
+				<xsd:sequence>
+					<xsd:element name="customer" type="tns:CustomerInformation">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of customer requesting the wire payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ACHPayment">
+		<xsd:annotation>
+			<xsd:documentation>Single low-value payment processed as ACH</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en"/>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:BeneInfo">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Beneficiary and beneficiary bank elements</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Credit amount</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="originator" type="tns:WireOriginator">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Payment originator</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:Instructions">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Elements for instructions for beneficiary and bank to bank</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="NoticeToReceive">
+		<xsd:annotation>
+			<xsd:documentation>Sent by a bank or corporate to the bank where they have an account informing them in advance of funds they expect to receive (MT210)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="creditAccount" type="btacct:AccountData"/>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount"/>
+					<xsd:element name="orderingParty" type="tns:OrderingParty"/>
+					<xsd:element name="intermediaryBank" type="tns:BankDetails"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Transfer">
+		<xsd:annotation>
+			<xsd:documentation>Account to account transfer</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="creditAccount" type="btacct:AccountData"/>
+					<xsd:element name="debitAccount" type="btacct:AccountData"/>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount" nillable="true">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer debit amount entered and rate not yet established</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="debitAmount" type="btamt:CurrencyAmount" nillable="true">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer credit amount entered and rate not yet established. Only present if accounts currency differs.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fxData" type="tns:FXData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Information related to foreign exchange (F/X) required to complete this payment. Only present if accounts currency differs.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="instructions" type="tns:InstructionsToBeneficiary" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional instructions for beneficiary</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="MultiBankPayment">
+		<xsd:annotation>
+			<xsd:documentation>Multi-Bank Payment (MT101)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData"/>
+					<xsd:group ref="tns:BeneInfo">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Beneficiary and beneficiary bank elements</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+					<xsd:element name="debitPartyIsInstructingParty" type="xsd:boolean">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">If true account number is used for originator id</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount" nillable="true">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer debit amount entered and rate not yet established</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="debitAmount" type="btamt:CurrencyAmount" nillable="true">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer credit amount entered and rate not yet established. Present only if debit account and bene require different currencies.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fxData" type="tns:FXData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Information related to foreign exchange (F/X) required to complete this payment. Present only if debit account and bene require different currencies.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="originator" type="tns:WireOriginator">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Payment originator</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:OptionalWireData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional elements including intermediary bank info, instructions to beneficiary and banak to bank instructions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Draft">
+		<xsd:annotation>
+			<xsd:documentation>Draft payment (check/bank draft)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData"/>
+					<xsd:element name="beneficiary" type="tns:BeneficiaryInfo" minOccurs="0"/>
+					<xsd:element name="originator" type="tns:WireOriginator"/>
+					<xsd:element name="instructions" type="tns:InstructionsToBeneficiary" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="InstitutionalTransfer">
+		<xsd:annotation>
+			<xsd:documentation>Transfer money between accounts at different financial institutions</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData"/>
+					<xsd:element name="beneficiaryInstitution" type="tns:BankDetails"/>
+					<xsd:element name="beneficiaryBank" type="tns:BankDetails"/>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount"/>
+					<xsd:element name="intermediaryBank" type="tns:BankDetails" minOccurs="0"/>
+					<xsd:element name="bankToBankInstructions" type="tns:BankToBankInstructions" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Drawdown">
+		<xsd:annotation>
+			<xsd:documentation>Drawdown request or reverse wire. Authorizes another party, such as a vendor, to withdraw funds from their account via a wire transfer</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData"/>
+					<xsd:element name="beneficiary" type="tns:BeneficiaryInfo"/>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount"/>
+					<xsd:element name="instructionsToBeneficiary" type="tns:InstructionsToBeneficiary" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="BillPay">
+		<xsd:annotation>
+			<xsd:documentation>Bill payment to registered billler</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountData"/>
+					<xsd:element name="biller" type="tns:BillerIdentification"/>
+					<xsd:element name="accountWithBiller" type="xsd:string"/>
+					<xsd:element name="debitAmount" type="btamt:CurrencyAmount"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="WirePayment">
+		<xsd:annotation>
+			<xsd:documentation>Generic Wire Payment. All fields used for various types included but made optional (minOccurs=0). Any wire type may be mapped into this generic form.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:WirePaymentBase">
+				<xsd:sequence>
+					<xsd:element name="debitAccount" type="btacct:AccountDataExtended" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Not included for Notice To Receive (MT210)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="creditAccount" type="btacct:AccountData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Included for Notice To Receive (MT210) and transfers</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:BeneInfo" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Beneficiary and beneficiary bank elements</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+					<xsd:element name="debitPartyIsInstructingParty" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">If true account number is used for originator id</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="creditAmount" type="btamt:CurrencyAmount" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer debit amount entered and rate not yet established</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="debitAmount" type="btamt:CurrencyAmount" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Could be nil if customer credit amount entered and rate not yet established. Present only if debit account and bene require different currencies.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fxData" type="tns:FXData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Information related to foreign exchange (F/X) required to complete this payment. Present only if debit account and bene require different currencies.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="originator" type="tns:WireOriginator" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Payment originator</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="customer" type="tns:CustomerInformation" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Details of customer requesting the wire payment. Populated for branch wire payments.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="tns:OptionalWireData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional elements including intermediary bank info, instructions to beneficiary and banak to bank instructions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:group>
+					<xsd:element name="beneAddressBookInfo" type="btpay:BeneAddressBookInfo" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional elements including details of beneficiary address book entry used to create this payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="onUsIndicator" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">On us indicator (Y/N)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

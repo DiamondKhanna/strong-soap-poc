@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/fxtrade/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:bttrade="http://www.bottomline.com/webseries/schema/ps/platform/trade/v1" xmlns:btfx="http://www.bottomline.com/webseries/schema/ps/platform/fx/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/fxtrade/v1" elementFormDefault="qualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/trade/v1" schemaLocation="../domain/platformTrade.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/fx/v1" schemaLocation="../domain/platformFX.xsd"/>
+	<xsd:element name="forExTradeRequest" type="tns:ForExTradeRequest" nillable="true"/>
+	<xsd:element name="forExTradeResponse" type="tns:ForExTradeResponse" nillable="true"/>
+	<xsd:complexType name="ForExTradeRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation>Request Header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tradeDealInfo" type="bttrade:TradeDealInfo">
+				<xsd:annotation>
+					<xsd:documentation>Foreign Exchange Deal Information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ForExTradeResponse">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>Combines all the data about the FX Deal.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="forExDealId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Object identifier for the Deal record.  </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="forExDealInfo" type="bttrade:TradeDealInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Contains information about the Deal.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="forExDealStatus" type="btfx:ForExDealStatus" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Contains data describing the current status of the Deal.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+			xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1"
+			xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1"
+			xmlns:btbal="http://www.bottomline.com/webseries/schema/ps/platform/balance/v1"
+			xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1"
+			xmlns:bttrans="http://www.bottomline.com/webseries/schema/ps/platform/transaction/v1"
+			xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1"
+			xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1"
+			xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/btr/v1"
+			targetNamespace="http://www.bottomline.com/webseries/schema/is/message/btr/v1" elementFormDefault="qualified">
+	<xsd:annotation />
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd" />
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/balance/v1" schemaLocation="../domain/platformBalance.xsd" />
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="../domain/platformAmount.xsd" />
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd" />
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/transaction/v1" schemaLocation="../domain/platformTransaction.xsd" />
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd" />
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd" />
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for balances. Standard product implementation.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="priorAccountBalanceRequest" type="tns:PriorAccountBalanceRequest" nillable="true" />
+	<xsd:element name="priorAccountBalanceResponse" type="tns:PriorAccountBalanceResponse" nillable="true" />
+	<xsd:element name="currentAccountBalanceRequest" type="tns:CurrentAccountBalanceRequest" nillable="true" />
+	<xsd:element name="currentAccountBalanceResponse" type="tns:CurrentAccountBalanceResponse" nillable="true" />
+	<xsd:element name="transactionInformationRequest" type="tns:TransactionInformationRequest" nillable="true" />
+	<xsd:element name="transactionInformationResponse" type="tns:TransactionInformationResponse" nillable="true" />
+	<xsd:element name="balanceAndTransEntitlementsRequest" type="tns:BalanceAndTransEntitlementsRequest" nillable="true" />
+	<xsd:element name="balanceAndTransEntitlementsResponse" type="tns:BalanceAndTransEntitlementsResponse" nillable="true" />
+	<xsd:element name="priorMultiCurrencyBalanceRequest" type="tns:PriorMultiCurrencyBalanceRequest" nillable="true" />
+	<xsd:element name="priorMultiCurrencyBalanceResponse" type="tns:PriorMultiCurrencyBalanceResponse" nillable="true" />
+	<xsd:element name="currentMultiCurrencyBalanceRequest" type="tns:CurrentMultiCurrencyBalanceRequest" nillable="true" />
+	<xsd:element name="currentMultiCurrencyBalanceResponse" type="tns:CurrentMultiCurrencyBalanceResponse" nillable="true" />
+
+	<xsd:complexType name="PriorAccountBalanceRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="extendedData" type="xsd:boolean" default="false" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If true response will contain exteneded info: total debits, total credits and forward available balances or float amounts</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="forwardAvailable" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If extended data is set to true, this parameter specifies whether returned data will be in form of forward available balances or float amounts.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountSearch" type="btacct:AccountSearch" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If account number not specified request is for all user's accounts.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="dateRange" type="btsearch:DateRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no dates specified request is for most recent balances.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PriorAccountBalanceResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="balanceData" type="btbal:PriorBalanceDataExtended" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Structure containing per account balance data. Will be repeated for each account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CurrentAccountBalanceRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountSearch" type="btacct:AccountSearch" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If account number not specified request is for all user's accounts.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CurrentAccountBalanceResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="balanceData" type="btbal:CurrentBalanceDataExtended" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Structure containing per account balance data. Will be repeated for each account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TransactionInformationRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountSearch" type="btacct:AccountSearch" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If account number not specified request is for all user's accounts.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="postDateRange" type="btsearch:DateRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no dates specified request is for all post dates.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="valueDateRange" type="btsearch:DateRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no dates specified request is for all value dates.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amountRange" type="btsearch:AmountRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no amount specified request is for any amount.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debitCreditIndicator" type="btsearch:SingleValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no indicator specified request is for both debits and credits. Valid search values: DR,CR</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="postedFlag" type="btsearch:SingleValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If no indicator specified request is for both posted and intraday. Valid search values:P,I</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currencyCode" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of standard 3 character currency codes.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionDetail" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specify search against payment details.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="customerReference" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specify search against Customer reference (Ordering reference).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankReference" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specify search against Bank reference (Issuing reference)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="timestamp" type="btsearch:TimestampRange" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specify search against received timestamp</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="includePseudoTransaction" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This optional parameter defaults to false. If set to true a miscellaneous debit/credit transactions may be included in results. These pseudo transactions may be generated based on reported forward available balance.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TransactionInformationResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionCount" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Number of transactions which match search criteria.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionData" type="bttrans:TransactionData" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Structure containing transaction data. Will be repeated for each transaction.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BalanceAndTransEntitlementsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BalanceAndTransEntitlementsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currentBalanceInquiry" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">True indicates user has entitlements to query for current account balance information. Accounts which user has access to must be obtained through acount inquiry service.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="priorBalanceInquiry" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">True indicates user has entitlements to query for current account balance information. Accounts which user has access to must be obtained through acount inquiry service.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionInquiry" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">True indicates user has entitlements to query for current account balance information. Accounts which user has access to must be obtained through acount inquiry service.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PriorMultiCurrencyBalanceRequest">
+		<xsd:complexContent>
+			<xsd:extension base="tns:PriorAccountBalanceRequest">
+				<xsd:sequence>
+					<xsd:element name="alternateCurrency" type="btamt:CurrencyCode">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The alternate currency in which to return the account balances</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PriorMultiCurrencyBalanceResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="balanceData" type="btbal:PriorAccountBalances" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Structure containing per account balance data. Will be repeated for each account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CurrentMultiCurrencyBalanceRequest">
+		<xsd:complexContent>
+			<xsd:extension base="tns:CurrentAccountBalanceRequest">
+				<xsd:sequence>
+					<xsd:element name="alternateCurrency" type="btamt:CurrencyCode">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The alternate currency in which to return the account balances</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CurrentMultiCurrencyBalanceResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="balanceData" type="btbal:CurrentAccountBalances" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Structure containing per account balance data. Will be repeated for each account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

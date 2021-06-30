@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/authentication/v1" 
+xmlns:btauth="http://www.bottomline.com/webseries/schema/ps/platform/authentication/v1"
+xmlns:btloc="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1"
+xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.bottomline.com/webseries/schema/is/message/authentication/v1" elementFormDefault="qualified" version="1.0">
+
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="./platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1" schemaLocation="../domain/platformLocalization.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/authentication/v1" schemaLocation="../domain/platformAuthentication.xsd"/>
+	
+	<xsd:element name="authenticateUserRequest" type="tns:AuthenticateUserRequest" nillable="true"/>
+	<xsd:element name="authenticateUserResponse" type="tns:AuthenticateUserResponse" nillable="true"/>
+	<xsd:complexType name="AuthenticateUserRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields including user data. To sucessfully authenticate  all information required to identify the user will be passed in userData.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AuthenticateUserResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields including boolean result and optionally error code and error messages</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userInformation" type="btauth:UserInformation" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic information for WebSeries user. Returned if user sucessfully authenticated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

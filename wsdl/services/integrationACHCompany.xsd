@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:btcomp="http://www.bottomline.com/webseries/schema/ps/platform/achcompany/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/achcompany/maint/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/achcompany/maint/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="../domain/platformEntitlements.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="../domain/platformUserGroup.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/achcompany/v1" schemaLocation="../domain/platformACHCompany.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for managing ACH companies within WebSeries</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="achCompanyDetailRequest" type="tns:ACHCompanyDetailRequest" nillable="true"/>
+	<xsd:element name="achCompanyDetailResponse" type="tns:ACHCompanyDetailResponse" nillable="true"/>
+	<xsd:element name="achCompanyListRequest" type="tns:ACHCompanyListRequest" nillable="true"/>
+	<xsd:element name="achCompanyListResponse" type="tns:ACHCompanyListResponse" nillable="true"/>
+	<xsd:element name="addACHCompanyRequest" type="tns:AddACHCompanyRequest" nillable="true"/>
+	<xsd:element name="addACHCompanyResponse" type="tns:AddACHCompanyResponse" nillable="true"/>
+	<xsd:element name="addMultiACHCompanyRequest" type="tns:AddMultiACHCompanyRequest" nillable="true"/>
+	<xsd:element name="addMultiACHCompanyResponse" type="tns:AddMultiACHCompanyResponse" nillable="true"/>
+	<xsd:element name="updateACHCompanyRequest" type="tns:UpdateACHCompanyRequest" nillable="true"/>
+	<xsd:element name="updateACHCompanyResponse" type="tns:UpdateACHCompanyResponse" nillable="true"/>
+	<xsd:element name="updateMultiACHCompanyRequest" type="tns:UpdateMultiACHCompanyRequest" nillable="true"/>
+	<xsd:element name="updateMultiACHCompanyResponse" type="tns:UpdateMultiACHCompanyResponse" nillable="true"/>
+	<xsd:element name="deleteACHCompanyRequest" type="tns:DeleteACHCompanyRequest" nillable="true"/>
+	<xsd:element name="deleteACHCompanyResponse" type="tns:DeleteACHCompanyResponse" nillable="true"/>
+	<xsd:element name="assignACHCompanyRequest" type="tns:AssignACHCompanyRequest" nillable="true"/>
+	<xsd:element name="assignACHCompanyResponse" type="tns:AssignACHCompanyResponse" nillable="true"/>
+	<xsd:element name="unassignACHCompanyRequest" type="tns:UnassignACHCompanyRequest" nillable="true"/>
+	<xsd:element name="unassignACHCompanyResponse" type="tns:UnassignACHCompanyResponse" nillable="true"/>
+	<xsd:element name="getBaseTypesForGroupRequest" type="tns:GetBaseTypesForGroupRequest" nillable="true"/>
+	<xsd:element name="getBaseTypesForGroupResponse" type="tns:GetBaseTypesForGroupResponse" nillable="true"/>
+	<xsd:element name="getBaseTypesForCompanyRequest" type="tns:GetBaseTypesForCompanyRequest" nillable="true"/>
+	<xsd:element name="getBaseTypesForCompanyResponse" type="tns:GetBaseTypesForCompanyResponse" nillable="true"/>
+	<xsd:element name="addBaseTypesForCompanyRequest" type="tns:AddBaseTypesForCompanyRequest" nillable="true"/>
+	<xsd:element name="addBaseTypesForCompanyResponse" type="tns:AddBaseTypesForCompanyResponse" nillable="true"/>
+	<xsd:element name="removeBaseTypesForCompanyRequest" type="tns:RemoveBaseTypesForCompanyRequest" nillable="true"/>
+	<xsd:element name="removeBaseTypesForCompanyResponse" type="tns:RemoveBaseTypesForCompanyResponse" nillable="true"/>
+	<xsd:element name="getChildSupportAgenciesForGroupRequest" type="tns:GetChildSupportAgenciesForGroupRequest" nillable="true"/>
+	<xsd:element name="getChildSupportAgenciesForGroupResponse" type="tns:GetChildSupportAgenciesForGroupResponse" nillable="true"/>
+	<xsd:element name="getChildSupportAgenciesForCompanyRequest" type="tns:GetChildSupportAgenciesForCompanyRequest" nillable="true"/>
+	<xsd:element name="getChildSupportAgenciesForCompanyResponse" type="tns:GetChildSupportAgenciesForCompanyResponse" nillable="true"/>
+	<xsd:element name="addChildSupportAgenciesForCompanyRequest" type="tns:AddChildSupportAgenciesForCompanyRequest" nillable="true"/>
+	<xsd:element name="addChildSupportAgenciesForCompanyResponse" type="tns:AddChildSupportAgenciesForCompanyResponse" nillable="true"/>
+	<xsd:element name="removeChildSupportAgenciesForCompanyRequest" type="tns:RemoveChildSupportAgenciesForCompanyRequest" nillable="true"/>
+	<xsd:element name="removeChildSupportAgenciesForCompanyResponse" type="tns:RemoveChildSupportAgenciesForCompanyResponse" nillable="true"/>
+	<xsd:element name="getTaxAuthoritiesForGroupRequest" type="tns:GetTaxAuthoritiesForGroupRequest" nillable="true"/>
+	<xsd:element name="getTaxAuthoritiesForGroupResponse" type="tns:GetTaxAuthoritiesForGroupResponse" nillable="true"/>
+	<xsd:element name="getTaxAuthoritiesForCompanyRequest" type="tns:GetTaxAuthoritiesForCompanyRequest" nillable="true"/>
+	<xsd:element name="getTaxAuthoritiesForCompanyResponse" type="tns:GetTaxAuthoritiesForCompanyResponse" nillable="true"/>
+	<xsd:element name="addTaxAuthoritiesForCompanyRequest" type="tns:AddTaxAuthoritiesForCompanyRequest" nillable="true"/>
+	<xsd:element name="addTaxAuthoritiesForCompanyResponse" type="tns:AddTaxAuthoritiesForCompanyResponse" nillable="true"/>
+	<xsd:element name="removeTaxAuthoritiesForCompanyRequest" type="tns:RemoveTaxAuthoritiesForCompanyRequest" nillable="true"/>
+	<xsd:element name="removeTaxAuthoritiesForCompanyResponse" type="tns:RemoveTaxAuthoritiesForCompanyResponse" nillable="true"/>
+	<xsd:element name="getFileImportEntryClassesForGroupRequest" type="tns:GetFileImportEntryClassesForGroupRequest" nillable="true"/>
+	<xsd:element name="getFileImportEntryClassesForGroupResponse" type="tns:GetFileImportEntryClassesForGroupResponse" nillable="true"/>
+	<xsd:element name="getFileImportEntryClassesForCompanyRequest" type="tns:GetFileImportEntryClassesForCompanyRequest" nillable="true"/>
+	<xsd:element name="getFileImportEntryClassesForCompanyResponse" type="tns:GetFileImportEntryClassesForCompanyResponse" nillable="true"/>
+	<xsd:element name="addFileImportEntryClassesForCompanyRequest" type="tns:AddFileImportEntryClassesForCompanyRequest" nillable="true"/>
+	<xsd:element name="addFileImportEntryClassesForCompanyResponse" type="tns:AddFileImportEntryClassesForCompanyResponse" nillable="true"/>
+	<xsd:element name="removeFileImportEntryClassesForCompanyRequest" type="tns:RemoveFileImportEntryClassesForCompanyRequest" nillable="true"/>
+	<xsd:element name="removeFileImportEntryClassesForCompanyResponse" type="tns:RemoveFileImportEntryClassesForCompanyResponse" nillable="true"/>
+	<xsd:element name="updateFileImportEntryClassesForCompanyRequest" type="tns:UpdateFileImportEntryClassesForCompanyRequest" nillable="true"/>
+	<xsd:element name="updateFileImportEntryClassesForCompanyResponse" type="tns:UpdateFileImportEntryClassesForCompanyResponse" nillable="true"/>
+	<xsd:element name="restoreACHCompanyRequest" type="tns:RestoreACHCompanyRequest" nillable="true"/>
+	<xsd:element name="restoreACHCompanyResponse" type="tns:RestoreACHCompanyResponse" nillable="true"/>
+	<xsd:complexType name="ACHCompanyDetailRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get ACH company details based on Id</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Company id to fetch details for.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyDetailResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companyInfo" type="btcomp:ACHCompanyInfo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of ACH companies based on search criteria</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Search and /or sort  on one or more user group ids</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companyName" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Text search and /or sort  on company name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="offsetAccountNumber" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Text search and /or sort on offset account number</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="offsetAccountName" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Text search on offset account name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ACHCompanyListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companyInfo" type="btcomp:ACHCompanyInfo" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company detail information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add an ACH company into the webseries system to be used by a client user group (CEU/CU).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companyInfo" type="btcomp:ACHCompanyInfo" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the ACH company to be added</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add an ACH company into the webseries system to be used by a client user group (CEU/CU).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companyInfo" type="btcomp:ACHCompanyInfo" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the ACH company to be added</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddMultiACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add multiple ACH companies into the webseries system to be used by a client user group (CEU/CU).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companies" type="btcomp:ACHCompanyWithEntitlements" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the ACH companies to be added</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddMultiACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateMultiACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update multiple ACH companies into the webseries system to be used by a client user group (CEU/CU).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companies" type="btcomp:ACHCompanyWithEntitlements" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the ACH companies to be updated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateMultiACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more companies (sets DL status)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the accounts to be deleted. Account delete in this case is logical not physical. A record of the account will still exits but it will be marked as deleted and no longer available fror use</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AssignACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Assign one or more ACH companies to a child user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Parent user group (CEU) to which accounts belong..</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group to which accounts will be assigned. Must be a child user group (CU) of the specified parent (CEU).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdWithTypes" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of  ACH companies along with payments types to be enabled for a subsidiary group. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AssignACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UnassignACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Assign one or more ACH companies to a child user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Parent user group (CEU) to which accounts belong..</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group to which accounts will be assigned. Must be a child user group (CU) of the specified parent (CEU).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdWithTypes" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of  ACH companies along with payments types to be enabled for a subsidiary group. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UnassignACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetBaseTypesForGroupRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group used fi;ter list of avaialble types</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetBaseTypesForGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="baseType" type="btcomp:ACHCompanyBaseTypeId" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetBaseTypesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetBaseTypesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="baseType" type="btcomp:ACHCompanyBaseTypeId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of types currently available for use with this company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddBaseTypesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="baseType" type="btcomp:ACHCompanyBaseTypeId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of types to add for use with this company. Must be already enabled for the customer (user group).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddBaseTypesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveBaseTypesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="baseType" type="btcomp:ACHCompanyBaseTypeId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of types to remove for use with this company.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveBaseTypesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetChildSupportAgenciesForGroupRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group used filter list of avaialble types</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetChildSupportAgenciesForGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="childSupportAgency" type="btcomp:ChildSupportAgency" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetChildSupportAgenciesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetChildSupportAgenciesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="childSupportAgency" type="btcomp:ChildSupportAgency" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddChildSupportAgenciesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="childSupportAgency" type="btcomp:ChildSupportAgency" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of agencies to add for use with this company. Must already exist and be enabled for this customer.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddChildSupportAgenciesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveChildSupportAgenciesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="childSupportAgency" type="btcomp:ChildSupportAgency" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of agencies to remove for use with this company.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveChildSupportAgenciesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetTaxAuthoritiesForGroupRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group used filter list of avaialble types</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetTaxAuthoritiesForGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="taxAuthority" type="btcomp:TaxAuthority" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetTaxAuthoritiesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetTaxAuthoritiesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="taxAuthority" type="btcomp:TaxAuthority" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddTaxAuthoritiesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="taxAuthority" type="btcomp:TaxAuthority" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Tax authoirities to add for use with this ACH company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddTaxAuthoritiesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveTaxAuthoritiesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="taxAuthority" type="btcomp:TaxAuthority" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Tax authoirities to remove from use with this ACH company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveTaxAuthoritiesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetFileImportEntryClassesForGroupRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group used filter list of avaialble types</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetFileImportEntryClassesForGroupResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="taxAuthority" type="btcomp:FileImportEntryClass" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetFileImportEntryClassesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetFileImportEntryClassesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fileImportEntryClass" type="btcomp:FileImportEntryClass" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddFileImportEntryClassesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fileImportEntryClass" type="btcomp:FileImportEntryClass" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">File import information by entry class to add for this company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddFileImportEntryClassesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveFileImportEntryClassesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fileImportEntryClass" type="btcomp:FileImportEntryClassId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">File import information by entry class to add for this company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RemoveFileImportEntryClassesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateFileImportEntryClassesForCompanyRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">ACH Company identifying information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fileImportEntryClass" type="btcomp:FileImportEntryClass" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">File import information by entry class to add for this company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateFileImportEntryClassesForCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreACHCompanyRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Restore one or more companies that have been logically deleted.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="company" type="btcomp:ACHCompanyIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the accounts to be restored.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreACHCompanyResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

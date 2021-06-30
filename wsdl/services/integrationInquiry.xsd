@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/inquiry/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btinqmsg="http://www.bottomline.com/webseries/schema/ps/message/inquiry/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/inquiry/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/inquiry/v1" schemaLocation="platformInquiry.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:element name="inquiryDataRequest" type="tns:inquiryDataRequest" nillable="true"/>
+	<xsd:element name="inquiryDataResponse" type="tns:inquiryDataResponse" nillable="true"/>
+	<xsd:element name="inquiryDataProfileRequest" type="tns:inquiryDataProfileRequest" nillable="true"/>
+	<xsd:element name="inquiryDataProfileResponse" type="tns:inquiryDataProfileResponse" nillable="true"/>
+	<xsd:element name="inquiryDataViewRequest" type="tns:inquiryDataViewRequest" nillable="true"/>
+	<xsd:element name="inquiryDataViewResponse" type="tns:inquiryDataViewResponse" nillable="true"/>
+	<xsd:element name="QueryDataRequest" type="tns:QueryDataRequest" nillable="true"/>
+	<xsd:element name="QueryDataResponse" type="tns:QueryDataResponse" nillable="true"/>
+	<xsd:element name="LookupDataRequest" type="tns:LookupDataRequest" nillable="true"/>
+	<xsd:element name="LookupDataResponse" type="tns:LookupDataResponse" nillable="true"/>
+	<xsd:complexType name="inquiryDataRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="inquiryRequest" type="btinqmsg:InquiryRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="inquiryDataResponse">
+		<xsd:sequence>
+			<xsd:element name="inquiryResponse" type="btinqmsg:InquiryResponse"/>
+			<xsd:element name="refreshTimestamp" type="xsd:dateTime"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="inquiryDataProfileRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="inquiryProfileRequest" type="btinqmsg:InquiryProfileRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="inquiryDataProfileResponse">
+		<xsd:sequence>
+			<xsd:element name="inquiryProfileResponse" type="btinqmsg:InquiryProfileResponse"/>
+			<xsd:element name="refreshTimestamp" type="xsd:dateTime"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="inquiryDataViewRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="inquiryViewRequest" type="btinqmsg:InquiryViewRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="inquiryDataViewResponse">
+		<xsd:sequence>
+			<xsd:element name="inquiryViewResponse" type="btinqmsg:InquiryViewResponse"/>
+			<xsd:element name="refreshTimestamp" type="xsd:dateTime"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="QueryDataRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti"/>
+			<xsd:element name="IncludeMapData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>0=Omit Map Data 1=Include Map Datal</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:int">
+						<xsd:minInclusive value="0"/>
+						<xsd:maxInclusive value="1"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="queryCriteria" type="btsearch:QueryCriteria" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="formatterType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Optional element for specifying the name of the formatter</xsd:documentation>
+				</xsd:annotation>			
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="QueryDataResponse">
+		<xsd:sequence>
+			<xsd:element name="queryResponse" type="btinqmsg:QueryResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LookupDataRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti"/>
+			<xsd:element name="searchCriteria" type="btsearch:SearchCriteria"/>
+			<xsd:element name="formatterType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Optional element for specifying the name of the formatter</xsd:documentation>
+				</xsd:annotation>			
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LookupDataResponse">
+		<xsd:sequence>
+			<xsd:element name="lookupResponse" type="btinqmsg:LookupResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

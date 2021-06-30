@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btinqmsg="http://www.bottomline.com/webseries/schema/ps/message/inquiry/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:btinq="http://www.bottomline.com/webseries/schema/ps/platform/inquiry/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/message/inquiry/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/inquiry/v1" schemaLocation="../domain/platformInquiry.xsd"/>
+	<xsd:complexType name="InquiryRequest">
+		<xsd:sequence>
+			<xsd:element name="searchCriteria" type="btsearch:SearchCriteria"/>
+			<xsd:element name="requestedColumns" type="xsd:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="startRow" type="xsd:int" default="1" />
+			<xsd:element name="rowsPerPage" type="xsd:int" default="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InquiryResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="rowHeader" type="btinq:ColumnHeaderData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="rows" type="btinq:RowData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="responseParameters" type="btws:nameValuePairList" nillable="true"/>
+			<xsd:element name="totalRows" type="xsd:int" default="0"/>
+			<xsd:element name="totalPages" type="xsd:int" default="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InquiryProfileRequest">
+		<xsd:sequence>
+			<xsd:element name="profileNum" type="xsd:string"/>
+			<xsd:element name="requestedColumns" type="xsd:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="customFilters" type="btsearch:CustomFilter" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InquiryProfileResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="rowHeader" type="btinq:ColumnHeaderData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="rows" type="btinq:RowData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="responseParameters" type="btws:nameValuePairList" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InquiryViewRequest">
+		<xsd:sequence>
+			<xsd:element name="viewId" type="xsd:integer"/>
+			<xsd:element name="customFilters" type="btsearch:CustomFilter" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InquiryViewResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="rowHeader" type="btinq:ColumnHeaderData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="rows" type="btinq:RowData" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="responseParameters" type="btws:nameValuePairList" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="QueryResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="QueryData" type="btinq:QueryData"/>
+			<xsd:element name="responseParameters" type="btws:nameValuePairList" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LookupResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="lookupData" type="btinq:LookupData"/>
+			<xsd:element name="responseParameters" type="btws:nameValuePairList" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

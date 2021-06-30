@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/currentdaybalance/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btbal="http://www.bottomline.com/webseries/schema/ps/platform/balance/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/currentdaybalance/v1" elementFormDefault="qualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/balance/v1" schemaLocation="../domain/platformBalance.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:element name="currentDayBalanceRequest" type="tns:CurrentDayBalanceRequest" nillable="true"/>
+	<xsd:element name="currentDayBalanceResponse" type="tns:CurrentDayBalanceResponse" nillable="true"/>
+	<xsd:complexType name="CurrentDayBalanceRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation>Request Header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="balanceReference" type="btacct:AccountDataFull" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Balance Reference Aggregate.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CurrentDayBalanceResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="balanceRecord" type="tns:BalanceRecord" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Balance Record. Required if request was successful. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BalanceRecord">
+		<xsd:sequence>
+			<xsd:element name="balanceData" type="btbal:CurrentBalanceDataExtended" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Balance Record. Required if request was successful. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="settings" type="btws:Setting" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional list of settings. May be used carry additional data required by specific implementations.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="balanceStatus" type="btmsg:Warning" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Item level balance status</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

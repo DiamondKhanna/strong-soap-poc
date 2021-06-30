@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/prefunding/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/prefunding/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+
+	<xsd:element name="prefundingRequest" type="tns:PrefundingRequest" nillable="true"/>
+	<xsd:element name="prefundingResponse" type="tns:PrefundingResponse" nillable="true"/>
+	<xsd:complexType name="PrefundingRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestInfo" type="tns:PrefundingRequestInfo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment Summary Information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PrefundingResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields including boolean result and optionally error code and error messages</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="responseInfo" type="tns:PrefundingResponseInfo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account Balance Information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PrefundingRequestInfo">
+		<xsd:sequence>
+			<xsd:element name="accountNumber" type="xsd:string"/>
+			<xsd:element name="accountName" type="xsd:string"/>
+			<xsd:element name="debitAmount" type="xsd:decimal"/>
+			<xsd:element name="debitCurrency" type="xsd:string"/>
+			<xsd:element name="transactionCode" type="xsd:string"/>
+			<xsd:element name="transactionDescription" type="xsd:string"/>
+			<xsd:element name="prefundingLimit" type="xsd:decimal"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PrefundingResponseInfo">
+		<xsd:sequence>
+			<xsd:element name="accountBalance" type="xsd:decimal"/>
+			<xsd:element name="accountCurrency" type="xsd:string"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="accountBalanceRequest" type="tns:AccountBalanceRequest" nillable="true"/>
+	<xsd:element name="accountBalanceResponse" type="tns:AccountBalanceResponse" nillable="true"/>
+	<xsd:complexType name="AccountBalanceRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestInfo" type="tns:AccountBalanceRequestInfo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account Information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountBalanceResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields including boolean result and optionally error code and error messages</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="responseInfo" type="tns:AccountBalanceResponseInfo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account Balance Information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountBalanceRequestInfo">
+		<xsd:sequence>
+			<xsd:element name="account" type="btacct:ExternalAccountId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account Identification Data</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountBalanceResponseInfo">
+		<xsd:sequence>
+			<xsd:element name="accountBalance" type="xsd:decimal"/>
+			<xsd:element name="balanceAsOf" type="xsd:dateTime" nillable="false"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:simpleType name="Amount">
+		<xsd:restriction base="xsd:decimal">
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DecimalPlaces">
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="0"/>
+			<xsd:totalDigits value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CurrencyCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z]{3,3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CountryCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z]{2,2}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="CurrencyAmount">
+		<xsd:simpleContent>
+			<xsd:extension base="tns:Amount">
+				<xsd:attribute name="currency" type="tns:CurrencyCode" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="CurrencyDetails">
+		<xsd:sequence>
+			<xsd:element name="code" type="tns:CurrencyCode"/>
+			<xsd:element name="description" type="xsd:string"/>
+			<xsd:element name="country" type="tns:CountryCode" nillable="true"/>
+			<xsd:element name="decimalPlaces" type="tns:DecimalPlaces"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="nameAmountPair">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="amount" type="tns:Amount"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="nameAmountPairList">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:nameAmountPair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

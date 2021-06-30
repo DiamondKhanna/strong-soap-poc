@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btauth="http://www.bottomline.com/webseries/schema/ps/platform/authentication/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btloc="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/authentication/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1" schemaLocation="./platformLocalization.xsd"/>
+	<xsd:complexType name="userData">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:string"/>
+			<xsd:element name="data" type="btws:nameValuePairList" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UserInformation">
+		<xsd:sequence>
+			<xsd:element name="group" type="xsd:string"/>
+			<xsd:element name="id" type="xsd:string"/>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="locale" type="btloc:LocaleString"/>
+			<xsd:element name="timezone" type="xsd:string"/>
+			<xsd:element name="passwordExpired" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation>Set to true if the user has been sucessfully authenticated but a password change is required</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="attribute" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" 
+xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:import namespace="http://www.w3.org/2005/05/xmlmime" schemaLocation="../w3c/xmlmime.xsd"/>
+	<xsd:complexType name="nameValuePair">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="nameValuePairList">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TypeInfo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Attributes used to describe a transaction type</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Product code denoting product this type fall under, e.g. PAY for payments</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="functionCode" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Function code denoting context of how the type is used. Examples are INST = paymment instructions, TMPL = payment template, MAINT = refreence data mainteance, RPT = reporting. In certain instance a wildcard '*' may be present. This indicates the type is being referenced across all valiid functions. This may be used in the case of accounts where they are enabled for a payment type both for instructions and templates.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="typeCode" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Tyoe code denoting instruction or data type, e.g. FEDWIRE for US domestic wire payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ActionData">
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string"/>
+			<xsd:element name="functionCode" type="xsd:string"/>
+			<xsd:element name="typeCode" type="xsd:string"/>
+			<xsd:element name="actionMode" type="xsd:string"/>
+			<xsd:element name="entryMethod" type="xsd:integer" default="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeData">
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string"/>
+			<xsd:element name="functionCode" type="xsd:string"/>
+			<xsd:element name="typeCode" type="xsd:string"/>
+			<xsd:element name="data" type="tns:nameValuePairList"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RowIdentifier">
+		<xsd:sequence>
+			<xsd:element name="TNum" type="xsd:string"/>
+			<xsd:element name="updateCount" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="productCode" type="xsd:string"/>
+			<xsd:element name="functionCode" type="xsd:string"/>
+			<xsd:element name="typeCode" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateId">
+		<xsd:sequence>
+			<xsd:element name="TransactionIdentifier" type="xsd:string"/>
+			<xsd:element name="updateCount" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:group name="CityStateZIP">
+		<xsd:sequence>
+			<xsd:element name="city" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="state" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="province" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="postalCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="countryCode" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:group name="Address1">
+		<xsd:sequence>
+			<xsd:element name="address1" type="xsd:string" minOccurs="0"/>
+			<xsd:group ref="tns:CityStateZIP"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:group name="Address2">
+		<xsd:sequence>
+			<xsd:element name="address1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="address2" type="xsd:string" minOccurs="0"/>
+			<xsd:group ref="tns:CityStateZIP"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:group name="Address3">
+		<xsd:sequence>
+			<xsd:element name="address1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="address2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="address3" type="xsd:string" minOccurs="0"/>
+			<xsd:group ref="tns:CityStateZIP" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:group name="Address4">
+		<xsd:sequence>
+			<xsd:element name="address1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="address2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="address3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="address4" type="xsd:string" minOccurs="0"/>
+			<xsd:group ref="tns:CityStateZIP" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="Address4Line">
+	<xsd:sequence>
+		<xsd:group ref="tns:Address4"/>
+	</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AuditItem">
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user group of user performing action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries User ID  of user performing the action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="timestamp" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date and time action was performed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:group name="StandardAuditItems">
+		<xsd:sequence>
+			<xsd:element name="entered" type="tns:AuditItem" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of  data entry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastModified" type="tns:AuditItem" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of data modification</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="deleted" type="tns:AuditItem" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of data deletion</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="Setting">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Settings">
+		<xsd:sequence>
+			<xsd:element name="setting" type="tns:Setting" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ProductSettings">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">List of settings related to a product. Each setting is a name/value pair.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string"/>
+			<xsd:element name="settings" type="tns:Setting" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">One or more product specific level settings. Each setting is a name/value pair.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+    <xsd:complexType name="Image">
+       <xsd:simpleContent>
+           <xsd:restriction base="xmime:base64Binary" >
+               <xsd:attribute ref="xmime:contentType" use="required" />
+           </xsd:restriction>
+       </xsd:simpleContent>
+    </xsd:complexType>
+	<xsd:complexType name="BillingAccount">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Account Number and Bank Code of the Billing Account.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="accountNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="bankCode" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ActionAlertMessage">
+		<xsd:sequence>
+			<xsd:element name="alertType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Alert Type for this Action Based Alert Message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User Group  for this Action Based Alert Message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">status for the corresponding Action Mode  for this Action Based Alert Message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="subject" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Subject for Alert Message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="data" type="tns:nameValuePair" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of NameValuePairs</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AlertMessage">
+		<xsd:sequence>
+			<xsd:element name="alertType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Alert Type for this Action Based Alert Message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User Group  for this Action Based Alert Message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="subject" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Subject for Alert Message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="emailAddress" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Recipient of this Alert message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountNumberField" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Column name from table for Account Number - used for account masking.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankCodeField" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Column name from table for Bank Code - used for account masking.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="data" type="tns:nameValuePairList" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of Data - List of NameValuePairLists</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btpay="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" xmlns:btach="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" xmlns:btwire="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btBAB="http://www.bottomline.com/webseries/schema/ps/platform/beneaddressbook/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/fraudscore/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/fraudscore/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" jaxb:version="2.1">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" schemaLocation="./platformPayment.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" schemaLocation="./platformPaymentACH.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/wire/v1" schemaLocation="./platformPaymentWire.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" schemaLocation="./platformUser.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="./platformUserGroup.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/beneaddressbook/v1" schemaLocation="./platformBeneAddressBook.xsd"/>
+	<xsd:complexType name="HTTPHeader">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">HTTP header name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Values associated with the header name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FileImport">
+		<xsd:complexContent>
+			<xsd:extension base="btpay:PaymentDetailBase">
+				<xsd:sequence>
+					<xsd:choice id="importedPayments" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<jaxb:property name="paymentDetails"/>
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:element name="wireDetails" type="btwire:WirePayment">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">Generic Wire Payment. All fields used for various types included but made optional (minOccurs=0). Any wire type may be mapped into this generic form.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="achDetails" type="btach:ACHBatchWithBeneDetails">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">ACH details with list of beneficiaries</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:choice>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FraudScoreContext">
+		<xsd:sequence>
+			<xsd:element name="messageId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="transactionDateTime" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="channel" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="sessionId" type="xsd:string"/>
+			<xsd:element name="actionMode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="autoAction" type="xsd:boolean" default="false" minOccurs="0"/>
+			<xsd:element name="HTTPHeaders" type="tns:HTTPHeader" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="resendDueToFailure" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="IPAddress" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="actionLocation" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Location in application where the action took place. LISTVIEW or DETAIL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="indirectAction" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Whether the action was a direct action or an indirect action (triggered by some other user action).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FraudScoreRequest">
+		<xsd:sequence>
+			<xsd:element name="fraudScoreContext" type="tns:FraudScoreContext">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fraud Score Context</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userData" type="btuser:User">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User Data and associated Audit Data</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroup">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice id="paymentDetail" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<jaxb:property name="paymentDetails"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:element name="wireDetails" type="btwire:WirePayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Generic Wire Payment. All fields used for various types included but made optional (minOccurs=0). Any wire type may be mapped into this generic form.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="achDetails" type="btach:ACHBatchWithBeneDetails">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">ACH details with list of beneficiaries</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="fileImportDetails" type="tns:FileImport">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Payments handled through file-level workflow</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FraudScoreResponseItem">
+		<xsd:sequence>
+			<xsd:element name="paymentId" type="xsd:string"/>
+			<xsd:element name="paymentType" type="xsd:string"/>
+			<xsd:element name="resultCode" type="xsd:string"/>
+			<xsd:element name="resultDescription" type="xsd:string"/>
+			<xsd:element name="score" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FraudScoreResponse">
+		<xsd:sequence>
+			<xsd:element name="messageId" type="xsd:string"/>
+			<xsd:element name="terminateSession" type="xsd:boolean" default="false" minOccurs="0"/>
+			<xsd:element name="disableUser" type="xsd:boolean" default="false" minOccurs="0"/>
+			<xsd:element name="paymentResponse" type="tns:FraudScoreResponseItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="fraudScoreHubRequest" type="tns:FraudScoreHubRequest">
+		<xsd:annotation>
+			<xsd:documentation>Root element for the XML embedded in an SPML request message</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="FraudScoreHubRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Message sent to hub to intiate fraud score / notification request. This is sent when asynchronous message is deemed too large to be assembled by web application. The determination of which messages are off loaded to the hub is made by a pluggable strategy component.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fraudScoreContext" type="tns:FraudScoreContext">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fraud Score Context</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userData" type="btuser:User">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User data</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroup">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+			<xsd:element name="paymentId" type="tns:PaymentId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of payment ids to include in fraud score request</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Score or Notification</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentId">
+		<xsd:complexContent>
+			<xsd:extension base="btpay:PaymentId">
+				<xsd:sequence>
+					<xsd:element name="status" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Payment status</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FraudScoreNotification">
+		<xsd:annotation>
+			<xsd:documentation>A one-way message used to notify the Fraud Scoring system that some event occurred. For example, the Fraud Scoring system did not flag a transaction, which was subsequently released. The bank then rejected it. That bank rejection would be sent as a notification, in an effort to improve the Fraud Scoring system.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fraudScoreContext" type="tns:FraudScoreContext" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fraud Score Context</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroup">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the user group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="notificationType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">BAB - Bene Address Book, Payment - ACH or RTGS payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice id="notificationPaymentDetail" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<jaxb:property name="paymentDetails"/>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:element name="wireDetails" type="btwire:WirePayment">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Generic Wire Payment. All fields used for various types included but made optional (minOccurs=0). Any wire type may be mapped into this generic form.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="achDetails" type="btach:ACHBatchWithBeneDetails">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">ACH details with list of beneficiaries</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="beneAddressBookDetails" type="btBAB:BeneAddressBook" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of Beneficiary Address Book entries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fraudScoreNotificationDetails" type="tns:FraudScoreNotificationDetails" maxOccurs="unbounded"/>
+			<xsd:element name="customFields" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FraudScoreNotificationDetails">
+		<xsd:annotation>
+			<xsd:documentation>Generic notification details.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Notification type. For Bank Rejected, will contain "BankRejected"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="timestamp" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Notification timestamp. For Bank Rejected, indicates when the bank rejected the transaction</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Optional notification description. For Bank Rejected, will contain the rejection reason</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="fraudScoreNotification" type="tns:FraudScoreNotification">
+		<xsd:annotation>
+			<xsd:documentation>Root element for a fraud score notification</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+</xsd:schema>

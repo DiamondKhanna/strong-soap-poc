@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" xmlns:btbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:btudef="http://www.bottomline.com/webseries/schema/ps/platform/userdefinedfield/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" elementFormDefault="qualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="./platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="./platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" schemaLocation="./platformBank.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" schemaLocation="./platformUser.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/userdefinedfield/v1" schemaLocation="./platformUserDefined.xsd"/>
+	<xsd:element name="paymentApprovedNotice" type="tns:PaymentApprovedNotice"/>
+	<xsd:simpleType name="Comment">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ExchangeRate">
+		<xsd:restriction base="xsd:decimal"/>
+	</xsd:simpleType>
+	<xsd:complexType name="PaymentId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Uniquely identify a payment. Define payment id as extension of row Identifier. This will ease migration to version 7.1 </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="btws:RowIdentifier"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentIdWithComment">
+		<xsd:complexContent>
+			<xsd:extension base="tns:PaymentId">
+				<xsd:sequence>
+					<xsd:element name="comment" type="tns:Comment" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional user comment associated with the action about to be taken, specific to payment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="PaymentAction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Enumeration not defined here. Supported actions vary between standard product and various clients. Validation occurs values in service. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="TemplateCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Template codes are unique per product. When used in product context this can be used to identify a template.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="Status">
+		<xsd:restriction base="xsd:string">
+			<xsd:length value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="StatusData">
+		<xsd:sequence>
+			<xsd:element name="status" type="tns:Status"/>
+			<xsd:element name="description" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="DebitCreditFlag">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Debit/credit flag used in Payments Common (C - Credit, D - Debit, M - Mixed batch)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[CDM]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DebitCreditIndicator">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Debit/credit Indicator values (e.g. used in batch child records)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CR"/>
+			<xsd:enumeration value="DR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Digest">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:complexType name="DigestData">
+		<xsd:sequence>
+			<xsd:element name="digest" type="tns:Digest"/>
+			<xsd:element name="digestAuditId" type="xsd:long"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OriginatorData">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Originator Id	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Originator Name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TemplateData">
+		<xsd:sequence>
+			<xsd:element name="code" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Template code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Template Description</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:group name="BeneficiaryInfo">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Mapped as follows:	ACH Detail - ReceivCompID if entryclass in ('CCD', 'CTX', 'IAT'), 	InvdID if entryclass in ('WEB', 'TEL', 'POP', 'POS', 'ARC', 'RCK', 'PPD'), InvdName if entryclass ('CIE'), 	ACH Batch - "MULTI", RTGS - Bene_Institution_ID if not empty else Bene_Account
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en"> Mapped as follows: 	ACH Detail - ReceivCompName if entryclass ('CCD', 'CTX', 'IAT'), InvdName if entryclass ('WEB', 'TEL', 'POP', 'POS', 'ARC', 'RCK', 'PPD'), InvdID if entryclass ('CIE'),  ACH Batch - "MULTI", RTGS - Bene_Name	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="account" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Mapped as follows: ACH Detail - AccountNumber, ACH Batch - "MULTI", RTGS - Bene_Account</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="BeneficiaryData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of payment beneficiary. Individual elements mapped based on payment type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:group ref="tns:BeneficiaryInfo"/>
+			<xsd:element name="bank" type="tns:BeneficiaryBankData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic payment beneficiary bank information including name, id and account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BeneficiaryDetails">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of payment beneficiary. Individual elements mapped based on payment type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:group ref="tns:BeneficiaryInfo"/>
+			<xsd:group ref="btws:Address2"/>
+			<xsd:element name="bank" type="tns:BeneficiaryBankDetails">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic payment beneficiary bank information including name, id and account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BeneficiaryBankData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of payment beneficiary. Individual elements mapped based on payment type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Mapped as follows: ACH Detail - ReceivABA, Batch - "MULTI", RTGS - Bene_Bank_ID</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Mapped as follows: ACH Detail - ReceivBankName, Batch - "MULTI", RTGS - Bene_Bank_Name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BeneficiaryBankDetails">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Details of beneficiary bank. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:BeneficiaryBankData">
+				<xsd:sequence>
+					<xsd:element name="type" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Sort code type, e.g. ABA, SWIFT, etc.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="btws:Address2"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentSummary">
+		<xsd:sequence>
+			<xsd:element name="paymentId" type="tns:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the payment within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentNumber" type="xsd:long">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group specific payment sequence number</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentMethod" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Localized description of payment method, e.g. Wires, ACH</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="typeDescription" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Localized description of payment type, e.g. Domestic Wire, Cash Concentration</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneficiaryData" type="tns:BeneficiaryData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic payment beneficiary information including name, id and account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debitCreditFlag" type="tns:DebitCreditFlag">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates whether this is a debit (D), credit (C) or mixed batch (M).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debitAmount" type="btamt:CurrencyAmount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Debit amount with currency code. For batch payment this is total debit amount. If this is a batch payment that is a credit this element will not appear.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="creditAmount" type="btamt:CurrencyAmount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Credit amount with currency code. For batch payment this is total credit amount. If this is a batch payment that is a credit this element will not appear.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionAmount" type="btamt:CurrencyAmount">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Transaction amount with currency code irrespective of DR/CR.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debitAccount" type="btacct:AccountData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of debit or offset(ACH) account</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statusInfo" type="tns:StatusData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code and description representing payments current status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tranDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date payment initiated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="valueDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date of actual debit/credit, i.e. effective date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="originator" type="tns:OriginatorData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Id and name of originator</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="template" type="tns:TemplateData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code and descrition of template used for payment creation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="exchangeRate" type="tns:ExchangeRate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Exchange rate for cross currency payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastActionTimestamp" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date and time of last action performed on this payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entered" type="tns:BasicAuditData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment entry into WebSeries </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastModified" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on last update to payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ImportInfo">
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries User Group of user who imported this payment/batch.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries UserID of user who imported this payment/batch.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="id" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Unique ID assigned during the import.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BasicAuditData">
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user group of user performing action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries User ID  of user performing the action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User name of user performing the action (may not be unique)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="actionTimestamp" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date and time action was performed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RejectAuditData">
+		<xsd:complexContent>
+			<xsd:extension base="tns:BasicAuditData">
+				<xsd:sequence>
+					<xsd:element name="rejectReason" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional element. User supplied reason for payment rejection</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ApprovalAuditData">
+		<xsd:complexContent>
+			<xsd:extension base="tns:BasicAuditData">
+				<xsd:sequence>
+					<xsd:element name="panelCode" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Optional element. If panel approval configured this tracks the approval panel user was representing</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentAuditHistory">
+		<xsd:sequence>
+			<xsd:element name="paymentId" type="tns:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifies payment whose audit history is being reported.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="auditItems" type="tns:PaymentAuditItem" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Audit records representing every action performed on specified payment.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentAuditItem">
+		<xsd:sequence>
+			<xsd:element name="action" type="tns:PaymentAction">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Action code of action performed on payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="actionDescription" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Application resource code for action decsription</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="actionTimestamp" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date and time action was performed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user group of user performing action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries User ID  of user performing the action</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User name of user performing the action (may not be unique)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Resulting status code of payment after action performed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statusDescription" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Application resource code for status description</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="batchTnum" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If payment is part of a batch, the transaction number of the parent</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="numberOfSignatures" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Number of signatures applied to the payment after action performed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="extendedInformation" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Additional details describing action performed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CommonAuditItems">
+		<xsd:sequence>
+			<xsd:element name="entered" type="tns:BasicAuditData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment entry into WebSeries </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastModified" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on last update to payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approved1" type="tns:ApprovalAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approved2" type="tns:ApprovalAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approved3" type="tns:ApprovalAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approved4" type="tns:ApprovalAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approved5" type="tns:ApprovalAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approved6" type="tns:ApprovalAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="canceled" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment cancellation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="deleted" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment deletion</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="released" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment deletion</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rejected" type="tns:RejectAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment approval rejection</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="unapproved" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment unrelease</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="repaired" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment unrelease</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="unreleased" type="tns:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on payment unrelease</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="import" type="tns:ImportInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on import payment into WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastApprover" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Last approver id as stored in PaymentsCommon.LastApprover</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentDetailBase" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="paymentId" type="tns:PaymentId" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the payment within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="typeDescription" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Localized description of payment type, e.g. Domestic Wire, Cash Concentration</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentNumber" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group specific payment sequence number</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionAmount" type="btamt:Amount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Transaction amount. Could be credit or debit. For cross-border this is amount specified by user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tranDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date payment initiated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="valueDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date of actual debit/credit, i.e. effective date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statusInfo" type="tns:StatusData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code and description representing payments current status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="extendedStatus" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Extended status information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="template" type="tns:TemplateData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code and descrition of template used for payment creation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="auditData" type="tns:CommonAuditItems" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Latest audit entries for various actions. Note it may not represent a full audit history if actions have been performed multiple times.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entryMethod" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment entry method</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="numberOfSignatures" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Total number of signatures applied to the payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cutoffTime" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Cutoff time</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clearingMethod" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Method of clearing e.g. NACHA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="subType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment sub-type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="indicativeAmount" type="btamt:Amount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional indicative amount. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userDefinedFields" type="btudef:UserDefinedFields" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional user defined fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PaymentApprovedNotice">
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the payment within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentId" type="tns:PaymentId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the payment within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentNumber" type="xsd:long">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group specific payment sequence number</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentMethod" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Localized description of payment method, e.g. Wires, ACH</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="typeDescription" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Localized description of payment type, e.g. Domestic Wire, Cash Concentration</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debitAccount" type="btacct:AccountData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of debit or offset(ACH) account</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="batchDescription" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Batch name or description</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneficiaryName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary name: ACH DETAIL - ReceivCompName if entryclass ('CCD', 'CTX', 'IAT'), InvName if entryclass ('WEB', 'TEL', 'POP', 'POS', 'ARC', 'RCK', 'PPD'), InvID if entryclass ('CIE'),  BATCH - "MULTI", RTGS - Bene_Name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="totalItems" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If batch the total number of items in the batch</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debitAmount" type="btamt:CurrencyAmount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Debit amount with currency code. For batch payment this is total debit amount. If this is a batch payment that is a credit this element will not appear.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="creditAmount" type="btamt:CurrencyAmount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Credit amount with currency code. For batch payment this is total credit amount. If this is a batch payment that is a credit this element will not appear.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clearingMethod" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Method of clearing e.g. NACHA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="valueDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date of actual debit/credit, i.e. effective date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approvalData" type="tns:ApprovalAuditData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of final approval including user id, user name and timestamp information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BeneAddressBookInfo">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Id of the beneficiary address book record used when creating this payment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="updateCount" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the number of times the beneficiary address book entry has been modified</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="timestamp" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date and time of most recent modification of the beneficiary address book entry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastUpdateUser" type="btuser:UserIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Last user to modify the bene address book entry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Status code of the bene address book entry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

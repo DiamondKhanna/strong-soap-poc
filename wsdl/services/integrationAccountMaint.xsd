@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Elena Zilberberg (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:btent="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:bttbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/account/maint/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/account/maint/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" schemaLocation="../domain/platformEntitlements.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="../domain/platformUserGroup.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="../domain/platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" schemaLocation="../domain/platformBank.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for managing Accounts within WebSeries</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="addAccountRequest" type="tns:AddAccountRequest" nillable="true"/>
+	<xsd:element name="addAccountResponse" type="tns:AddAccountResponse" nillable="true"/>
+	<xsd:element name="updateAccountRequest" type="tns:UpdateAccountRequest" nillable="true"/>
+	<xsd:element name="updateAccountResponse" type="tns:UpdateAccountResponse" nillable="true"/>
+	<xsd:element name="addMultiAccountRequest" type="tns:AddMultiAccountRequest" nillable="true"/>
+	<xsd:element name="addMultiAccountResponse" type="tns:AddMultiAccountResponse" nillable="true"/>
+	<xsd:element name="updateMultiAccountRequest" type="tns:UpdateMultiAccountRequest" nillable="true"/>
+	<xsd:element name="updateMultiAccountResponse" type="tns:UpdateMultiAccountResponse" nillable="true"/>
+	<xsd:element name="deleteAccountRequest" type="tns:DeleteAccountRequest" nillable="true"/>
+	<xsd:element name="deleteAccountResponse" type="tns:DeleteAccountResponse" nillable="true"/>
+	<xsd:element name="accountDetailRequest" type="tns:AccountDetailRequest" nillable="true"/>
+	<xsd:element name="accountDetailResponse" type="tns:AccountDetailResponse" nillable="true"/>
+	<xsd:element name="accountListRequest" type="tns:AccountListRequest" nillable="true"/>
+	<xsd:element name="accountListResponse" type="tns:AccountListResponse" nillable="true"/>
+	<xsd:element name="bankListRequest" type="tns:BankListRequest" nillable="true"/>
+	<xsd:element name="bankListResponse" type="tns:BankListResponse" nillable="true"/>
+	<xsd:element name="assignAccountRequest" type="tns:AssignAccountRequest" nillable="true"/>
+	<xsd:element name="assignAccountResponse" type="tns:AssignAccountResponse" nillable="true"/>
+	<xsd:element name="unassignAccountRequest" type="tns:UnassignAccountRequest" nillable="true"/>
+	<xsd:element name="unassignAccountResponse" type="tns:UnassignAccountResponse" nillable="true"/>
+	<xsd:element name="accountLimitsRequest" type="tns:AccountLimitsRequest" nillable="true"/>
+	<xsd:element name="accountLimitsResponse" type="tns:AccountLimitsResponse" nillable="true"/>
+	<xsd:element name="replaceAccountLimitsRequest" type="tns:ReplaceAccountLimitsRequest" nillable="true"/>
+	<xsd:element name="replaceAccountLimitsResponse" type="tns:ReplaceAccountLimitsResponse" nillable="true"/>
+	<xsd:element name="addAccountLimitsRequest" type="tns:AddAccountLimitsRequest" nillable="true"/>
+	<xsd:element name="addAccountLimitsResponse" type="tns:AddAccountLimitsResponse" nillable="true"/>
+	<xsd:element name="restoreAccountRequest" type="tns:RestoreAccountRequest" nillable="true"/>
+	<xsd:element name="restoreAccountResponse" type="tns:RestoreAccountResponse" nillable="true"/>
+	<xsd:element name="addAccountEntitlementsRequest" type="tns:AddAccountEntitlementsRequest" nillable="true"/>
+	<xsd:element name="addAccountEntitlementsResponse" type="tns:AddAccountEntitlementsResponse" nillable="true"/>
+	<xsd:complexType name="AddAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add an account into the webseries system to be used by a client user group (CEU/CU).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="account" type="btacct:AccountWithEntitlements" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the account to be added</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update information for an existing acccount</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="account" type="btacct:AccountWithEntitlements" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the account to be added</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="updateEntitlements" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether the request includes updates to account entitlements (types) or simply updates to the acount details.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddMultiAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add multiple accounts into the webseries system to be used by a client user group (CEU/CU).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accounts" type="btacct:AccountWithEntitlements" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of accounts to be added</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddMultiAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateMultiAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update information for multiple existing acccounts</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accounts" type="btacct:AccountWithEntitlements" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of accounts to be updated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="updateEntitlements" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specifies whether the request includes updates to account entitlements (types) or simply updates to the acount details.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateMultiAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more users (sets DL status)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountId" type="btacct:AccountId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the accounts to be deleted. Account delete in this case is logical not physical. A record of the account will still exits but it will be marked as deleted and no longer available fror use</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeleteAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountDetailRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get account details based on Id</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountId" type="btacct:AccountId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User id to fetch details for.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountDetailResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="account" type="btacct:AccountWithEntitlements">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of accounts based on search criteria</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankCode" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountNumber" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountName" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientAccountName" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currencyCode" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountType" type="btsearch:MultiValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="account" type="btacct:AccountDataFull" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries user model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BankListRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get list of bank based on search criteria</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeaderMulti" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankCode" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankName" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bankRoutingCode" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EFTRoutingCode" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="wireRoutingCode" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="internationalBIC" type="btsearch:TextSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="multiBankIndicator" type="btsearch:SingleValueSearchField" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BankListResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bank" type="bttbank:BankDataFull" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries bank model</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AssignAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Assign one or more accounts to a child user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Parent user group (CEU) to which accounts belong..</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group to which accounts will be assigned. Must be a child user group (CU) of the specified parent (CEU).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountId" type="btacct:AccountId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the accounts to be assigned to subsidiary group. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AssignAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UnassignAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Assign one or more accounts to a child user group</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Parent user group (CEU) to which accounts belong..</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">User group to which accounts will be assigned. Must be a child user group (CU) of the specified parent (CEU).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountId" type="btacct:AccountId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the accounts to be unassigned to subsidiary group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UnassignAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountLimitsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Get account limits based on Id</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountId" type="btacct:AccountId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account identifying info.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationalData" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This is set to true if data requested should be operational data rather than mainteance data. Maintenance data may include items that have not been approved.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AccountLimitsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountLimits" type="btacct:AccountLimits">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic account info plus limits.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReplaceAccountLimitsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update an account's limits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountLimits" type="btacct:AccountLimits">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic account info plus limits.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReplaceAccountLimitsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddAccountLimitsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add more account limits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountLimits" type="btacct:AccountLimits">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic account info plus limits.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddAccountLimitsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreAccountRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Restore one or more accounts</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountId" type="btacct:AccountId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of unique identifiers of the accounts to be restored.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RestoreAccountResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddAccountEntitlementsRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add more account transaction types.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+				<xsd:element name="accountTypes" type="btacct:AccountEntitlements">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basic account info with entitlement types.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddAccountEntitlementsResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

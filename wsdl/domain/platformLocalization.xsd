@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1" elementFormDefault="qualified" version="1.0">
+	<xsd:simpleType name="LanguageCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> Language code (ISO 639 alpha 2) </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-z]{2,2}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CountryCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> country code (ISO 3166-1 alpha 2) </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z]{2,2}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LocaleString">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"> </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-z]{2,2}_[A-Z]{2,2}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Locale">
+		<xsd:sequence>
+			<xsd:element name="language" type="tns:LanguageCode"/>
+			<xsd:element name="country" type="tns:CountryCode"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApplicationResource">
+		<xsd:sequence>
+			<xsd:element name="key" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Locale independent code that the system uses to reference the Message text.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="locale" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Locale code in xx_YY format where xx is language code (ISO 639 alpha 2) and YY is country code (ISO 3166-1 alpha 2)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Text of message in the appropriate language for the locale.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

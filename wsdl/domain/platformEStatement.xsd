@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/estatement/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/estatement/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="./platformAccount.xsd"/>
+	<xsd:complexType name="EStatementInfo">
+		<xsd:sequence>
+			<xsd:element name="account" type="btacct:ExternalAccountId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account criteria for check inquiry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of statement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date range for  statements</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementImageID" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifier used to retrieve statement in binary (e.g. PDF) format</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementDescription" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional title or descriptive information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementSize" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional size. May be interpreted differently based on statement type (e.g. number of pages or file size in bytes).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="additionalData" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EStatementId">
+		<xsd:sequence>
+			<xsd:element name="account" type="btacct:AccountId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account criteria for check inquiry</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statementType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of statement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

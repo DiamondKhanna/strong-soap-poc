@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/external/message/fxgetrate/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btgetrate="http://www.bottomline.com/webseries/schema/ps/platform/getRate/v1" targetNamespace="http://www.bottomline.com/webseries/schema/external/message/fxgetrate/v1" elementFormDefault="qualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/getRate/v1" schemaLocation="../domain/platformGetRate.xsd"/>
+	<xsd:element name="getRateRequest" type="tns:GetRateRequest" nillable="true"/>
+	<xsd:element name="getRateResponse" type="tns:GetRateResponse" nillable="true"/>	
+	<xsd:complexType name="GetRateRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader">
+				<xsd:annotation>
+					<xsd:documentation>Request Header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="getRateQuote" type="btgetrate:GetRateQuote">
+				<xsd:annotation>
+					<xsd:documentation>Foreign Exchange Deal Information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetRateResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="forExGetRateDeal" type="btgetrate:ForExGetRateDeal" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Combines all the data about the FX Deal.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

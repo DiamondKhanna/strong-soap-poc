@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btdtlmsg="http://www.bottomline.com/webseries/schema/ps/message/detail/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btdetail="http://www.bottomline.com/webseries/schema/ps/platform/detail/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/message/detail/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/detail/v1" schemaLocation="../domain/platformDetailData.xsd"/>
+	<xsd:complexType name="DetailDataResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="rows" type="btdetail:DetailRow" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="grids" type="btdetail:DetailGrid" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btauth="http://www.bottomline.com/webseries/schema/ps/platform/authentication/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/message/common/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/authentication/v1" schemaLocation="../domain/platformAuthentication.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:complexType name="Warning">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>Warning type: 0 = soft, 1 = hard. Soft warnings are informational only. Hard warning require resubmittal.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="code" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Language neutral code representing warning</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="message" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Language specific (localized) message describing warning</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MessageWithContext">
+		<xsd:annotation>
+			<xsd:documentation>Error message with additional context if available such as an error code</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="message" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>A generic message</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorCode" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation>An error code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseHeader">
+		<xsd:annotation>
+			<xsd:documentation>Standard response generic values for some service operations</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Identifier from the original service request</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="result" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation>Determines whether the call was successful</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="message" type="xsd:string" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>A generic message</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="messageWithContext" type="tns:MessageWithContext" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>A generic message with context including an optional error code if available.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorCode" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation>An error code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="additionalData" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Optional field for any additional Information to be communicated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseHeaderMultiItem">
+		<xsd:annotation>
+			<xsd:documentation>Response message for multiple items</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="tns:ResponseHeader"/>
+			<xsd:element name="itemResponseHeader" type="tns:ItemResponseHeader" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The response for each requested item</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ItemResponseHeader">
+		<xsd:annotation>
+			<xsd:documentation>Response header for an item in a group of actions.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:ResponseHeader">
+				<xsd:sequence>
+					<xsd:element name="itemId" type="xsd:string"/>
+					<xsd:element name="rowIdentifier" type="btws:RowIdentifier" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ItemResponseWithWarnings">
+		<xsd:annotation>
+			<xsd:documentation>Response header for an item in a group of actions that may include warnings.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:ItemResponseHeader">
+				<xsd:sequence>
+					<xsd:element name="warning" type="tns:Warning" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Response header for an item in a group of actions that may include warnings.	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseHeaderMultiItemWithWarnings">
+		<xsd:annotation>
+			<xsd:documentation>Response header for group of items that have been acted on</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:ResponseHeader">
+				<xsd:sequence>
+					<xsd:element name="itemResponse" type="tns:ItemResponseWithWarnings" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>
+								Response header for an item in a group of actions that may include warnings.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="RequestHeader">
+		<xsd:sequence>
+			<xsd:element name="requestId" type="xsd:string"/>
+			<xsd:element name="requestUser" type="btauth:userData" minOccurs="0"/>
+			<xsd:element name="channelId" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestHeaderMulti">
+		<xsd:complexContent>
+			<xsd:extension base="tns:RequestHeader">
+				<xsd:sequence>
+					<xsd:element name="queryOffset" type="xsd:int"/>
+					<xsd:element name="queryPagesize" type="xsd:int"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

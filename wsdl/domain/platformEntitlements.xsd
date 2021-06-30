@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btestmt="http://www.bottomline.com/webseries/schema/ps/platform/estatement/v1" xmlns:btcomp="http://www.bottomline.com/webseries/schema/ps/platform/achcompany/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:btug="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" xmlns:btpay="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/entitlements/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="./platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/achcompany/v1" schemaLocation="./platformACHCompany.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/estatement/v1" schemaLocation="./platformEStatement.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/usergroup/v1" schemaLocation="./platformUserGroup.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" schemaLocation="./platformUser.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" schemaLocation="./platformPayment.xsd"/>
+	<xsd:simpleType name="DataType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used when specifying data entitlements. Indicates the data entity type which will define what attributes are needed to describe the enitity.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ACCOUNT"/>
+			<xsd:enumeration value="ACHCOMP"/>
+			<xsd:enumeration value="TEMPLATE"/>
+			<xsd:enumeration value="APPLICATION"/>
+			<xsd:enumeration value="LEGACYSYSTEMID"/>
+			<xsd:enumeration value="ESTATEMENTID"/>
+			<xsd:enumeration value="NONE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ProvisioningAction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used with resources included in provisioning messages (SPML). This attribute describes the action the consumer of the message should take for the entity to which it is attached. Values for this attribute are:(A)dd, (U)pdate, (D)elete, (N)one.  For user group an additional (C)lone operation is also supported. None is used if entity is included for completeness or for informational purposes only and no action is required to be taken for that entity as part of processing the message.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/>
+			<xsd:enumeration value="U"/>
+			<xsd:enumeration value="D"/>
+			<xsd:enumeration value="N"/>
+			<xsd:enumeration value="C"/>
+			<xsd:enumeration value="P"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ApplicationId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Application ID number. Used in CLM product.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer"/>
+	</xsd:simpleType>
+	<xsd:attribute name="roleId" type="xsd:string">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Optional attribute. Role id of the role from which a user derives entitlement to the associated resource. If the entitlement has been granted by multiple roles, the attribute value will ne comma seperated list of role ids.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:attribute>
+	<xsd:attribute name="provisioningAction" type="tns:ProvisioningAction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Optional attribute. Used with resources included in provisioning messages (SPML). This attribute describes the action the consumer of the message should take for the entity to which it is attached. Values for this attribute are:(A)dd, (U)pdate, (D)elete, (N)one. For user group an additional (C)lone operation is also supported. None is used if entity is included for completeness or for informational purposes only and no action is required to be taken for that entity as part of processing the message.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:attribute>
+	<xsd:group name="DataEntitlementInfo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Elements describing access to a particilar data element (account, company, etc.)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="dataType" type="tns:DataType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates data type that will be identified by the data value. Different entities (e.g. account, ach company) require different attributes to identify a specific instance. If the product does not support data entitlements at the role level data type will be set to NONE and no data value will be present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="qualifier" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional element may be used to more fully describe the type, i.e. more than one type of account exists for a product</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice id="dataValue" minOccurs="0">
+				<xsd:element name="account" type="btacct:AccountId"/>
+				<xsd:element name="achCompany" type="btcomp:ACHCompanyIdWithType"/>
+				<xsd:element name="template" type="btpay:TemplateCode"/>
+				<xsd:element name="application" type="tns:ApplicationId"/>
+				<xsd:element name="legacySystemId" type="tns:LegacySystemId"/>
+				<xsd:element name="eStmtId" type="btestmt:EStatementId"/>
+				<xsd:element name="wildcard" type="tns:Wildcard">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">Can be used with any data type to explicitly grant data entitlements to all entities of that type.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="LegacySystemId">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EntitlementData">
+		<xsd:sequence>
+			<xsd:element name="userGroup" type="xsd:string"/>
+			<xsd:element name="roleId" type="xsd:string"/>
+			<xsd:element name="productCode" type="xsd:string"/>
+			<xsd:element name="functionCode" type="xsd:string"/>
+			<xsd:element name="typeCode" type="xsd:string"/>
+			<xsd:element name="actionMode" type="xsd:string"/>
+			<xsd:element name="entryMethod" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EntitlementDataList">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:EntitlementData" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Restriction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A restriction (or limit) is placed on an functional entitlement or entity (account or company). For example, it may limit the amount of a transaction of a particular type or on a particular account. This is a general construct and can be used for more than amount limits. It can also be used to describe restrictions based on other criteria such as on time of day (9am through 5am EST)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="restrictionType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of restriction e.g. "DailyLimit", "ACHBatchLimit"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value1" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">String representation of limit value. Value may need to be converted for enforcement based on retriction type, e.g. to amount, integer, or time of day.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value2" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional second value if restriction type supports range</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="RestrictionSet">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A group of restrictions that must be viewed as a group. They are tied to a specific entitlement through a specific role.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="restriction" type="tns:Restriction" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+		<xsd:attribute ref="tns:roleId" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="ActionWithLimits">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Represents an action within the system which has been entitled for a user. It may have limits or restrictions on its usage.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="btws:ActionData">
+				<xsd:sequence>
+					<xsd:element name="limits" type="tns:RestrictionSet" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of restriction sets on the use of this transaction type or report. Each set was assigned when the entitlement granted to a role. The set of restrictions (or limits) should be treated as a unit.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="tns:roleId" use="optional"/>
+				<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="GlobalLimits">
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string"/>
+			<xsd:element name="functionCode" type="xsd:string"/>
+			<xsd:element name="limits" type="tns:RestrictionSet" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Global limits for  a product and function</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TypeWithLimits">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Represents a transaction type or report which has been enabled for a user group. It may have limits or restrictions on its usage.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="btws:TypeInfo">
+				<xsd:sequence>
+					<xsd:element name="limits" type="tns:RestrictionSet" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of restriction sets on the use of this transaction type or report. Each set was assigned when the entitlement granted to a role. The set of restrictions (or limits) should be treated as a unit.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Wildcard">
+		<xsd:attribute name="inclusive" type="xsd:boolean" default="true"/>
+	</xsd:complexType>
+	<xsd:complexType name="ActionDataEntitlement">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Action that has been entitled to the user. Extended to explicitly define data entities (e.g. account, ach company) that the user can access while performing the specified action. If WebSeries data entitlements are not enabled for the product, dataType will be "NONE" and no data value will be present.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="btws:ActionData">
+				<xsd:sequence>
+					<xsd:group ref="tns:DataEntitlementInfo"/>
+					<xsd:element name="limits" type="tns:RestrictionSet" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of restriction sets on the use of this transaction type or report. Each set was assigned when the entitlement granted to a role. The set of restrictions (or limits) should be treated as a unit.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+				<xsd:attribute ref="tns:roleId" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="DataEntitlement">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Represents access to a particular data element</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:group ref="tns:DataEntitlementInfo"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ProductDataEntitlements">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">List of data entitlements grouped by product</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string"/>
+			<xsd:element name="dataEntitlement" type="tns:DataEntitlement" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TypesByProduct">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">List of transaction types and reports grouped by product for conveinence/readability. Each type contains a product code attribute and could be processed independently of the parent element.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Product code associated with this particular group of types</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="transactionTypes" type="tns:TypeWithLimits" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of transction types enabled for this product</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="ActionsByProduct">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">List of functional entitlements grouped by product for conveinence/readability. Each action entitlement may contain a product code set of restrictions/limits on its usage</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productCode" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Product code associated with this particular group of types</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="globalLimits" type="tns:GlobalLimits" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of global limits by product and function</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="action" type="tns:ActionWithLimits" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of actions types enabled for this product</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="RoleIdentifier">
+		<xsd:sequence>
+			<xsd:element name="roleId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Role ID</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="btug:UserGroupIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">This represents a client organization (entreprise or a subsidiary). Within WebSeries a company is always associated with a user group. It is optional within this type because user group may be supplied by enclosing structure.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="updateCount" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Used for optimistic locking</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute ref="tns:provisioningAction" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="RoleInfo">
+		<xsd:complexContent>
+			<xsd:extension base="tns:RoleIdentifier">
+				<xsd:sequence>
+					<xsd:element name="description" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>Description of the Role for display in lists and reports.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="serviceUserGroup" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>Bank operations group responsible for the customer usergroup that ows this role.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="status" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>Bank operations group responsible for the customer usergroup that ows this role.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="rolename" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>Bank operations group responsible for the customer usergroup that ows this role.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Role">
+		<xsd:annotation>
+			<xsd:documentation>Role which can be assigned to a user. Roles are defined as part of the customer/user group. Roles contain both functional (actions) and data (accounts, ACH companies) entitlements.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:RoleInfo">
+				<xsd:sequence>
+					<xsd:element name="functionalEntitlements" type="tns:ActionsByProduct" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>List of functional (actions) entitlements which may include limits/restrictions.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="dataEntitlements" type="tns:ProductDataEntitlements" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>List of data (accounts, ACH companies) entitlements.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:group ref="btws:StandardAuditItems" minOccurs="0"/>
+					<xsd:element name="lastTouchedByApplication" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Which application last entered or modified the role.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="bankMaintained" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Flags this role as maintained by the bank.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

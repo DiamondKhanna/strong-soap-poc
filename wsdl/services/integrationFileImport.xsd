@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/fileimport/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/fileimport/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:element name="FileUploadRequest" type="tns:FileUploadRequest" nillable="true"/>
+	<xsd:element name="FileUploadResponse" type="tns:FileUploadResponse" nillable="true"/>
+	<xsd:element name="InitiateImportRequest" type="tns:InitiateImportRequest" nillable="true"/>
+	<xsd:element name="InitiateImportResponse" type="tns:InitiateImportResponse" nillable="true"/>
+	<xsd:element name="NotificationsRequest" type="tns:NotificationsRequest" nillable="true"/>
+	<xsd:element name="NotificationsResponse" type="tns:NotificationsResponse" nillable="true"/>
+	
+	<xsd:complexType name="FileImportError">
+		<xsd:sequence>
+			<xsd:element name="errorMessage" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="transactionNumber" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="FileImportAudit">
+		<xsd:sequence>
+			<xsd:element name="account" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="amount" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="typeCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="typeDescription" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="importTnum" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="statusCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="statusDescription" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="paymentId" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="importRecord" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="messageNumber" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="currencyCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="beneName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="recordType" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="templateCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="templateDescription" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="functionCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="confidentionalFlag" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="fileImportErrors" type="tns:FileImportError" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="FileImportSession">
+		<xsd:sequence>
+			<xsd:element name="sessionId" type="xsd:integer"/>
+			<xsd:element name="dateEntered" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="userGroup" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="userId" type="xsd:string"/>
+			<xsd:element name="totalProcessed" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="originalFile" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="warnings" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="errorCount" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="statusCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="statusDescription" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="accepts" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="rejects" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="importId" type="xsd:string"/>
+			<xsd:element name="eventId" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="importCode" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Notifications">
+		<xsd:sequence>
+			<xsd:element name="notificationType" type="xsd:string"/>
+			<xsd:element name="id" type="xsd:string"/>
+			<xsd:element name="notificationText" type="xsd:string"/>
+			<xsd:element name="fileImportSession" type="tns:FileImportSession" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="FileUploadRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="fileName" type="xsd:string"/>
+			<xsd:element name="fileType" type="xsd:string"/>
+			<xsd:element name="fileData" type="xsd:base64Binary"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FileUploadResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="blobId" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InitiateImportRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="blobId" type="xsd:integer"/>
+			<xsd:element name="fileName" type="xsd:string"/>
+			<xsd:element name="fileType" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InitiateImportResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="jobId" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="NotificationsRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="jobId" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="NotificationsResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeader"/>
+			<xsd:element name="notificationMainMessage" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="notifications" type="tns:Notifications" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:btpayoriginator="http://www.bottomline.com/webseries/schema/ps/platform/paymentoriginator/v1" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/paymentoriginator/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/paymentoriginator/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="../domain/platformSearch.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/paymentoriginator/v1" schemaLocation="../domain/platformPaymentOriginator.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en"> Request/response messages for managing WebSeries Payment Originators.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="addPaymentOriginatorRequest"  	type="tns:AddPaymentOriginatorRequest" nillable="true"/>
+	<xsd:element name="addPaymentOriginatorResponse" 	type="tns:AddPaymentOriginatorResponse" nillable="true"/>
+	<xsd:element name="updatePaymentOriginatorRequest"  type="tns:UpdatePaymentOriginatorRequest" nillable="true"/>
+	<xsd:element name="updatePaymentOriginatorResponse" type="tns:UpdatePaymentOriginatorResponse" nillable="true"/>
+	<xsd:element name="deletePaymentOriginatorRequest" 	type="tns:DeletePaymentOriginatorRequest" nillable="true"/>
+	<xsd:element name="deletePaymentOriginatorResponse" type="tns:DeletePaymentOriginatorResponse" nillable="true"/>
+
+	<xsd:complexType name="AddPaymentOriginatorRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Add a new Originator</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PaymentOriginator" type="btpayoriginator:PaymentOriginator" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the Payment Originator to be added.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+		</xsd:sequence>
+	</xsd:complexType>	
+	<xsd:complexType name="AddPaymentOriginatorResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UpdatePaymentOriginatorRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Update a new Originator</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PaymentOriginator" type="btpayoriginator:PaymentOriginator" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the Payment Originator to be updated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+		</xsd:sequence>
+	</xsd:complexType>	
+	<xsd:complexType name="UpdatePaymentOriginatorResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DeletePaymentOriginatorRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Delete one or more Payment Originator (sets DL status)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard request fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PaymentOriginator" type="btpayoriginator:PaymentOriginatorIdentifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">List of Payment Originators to be deleted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DeletePaymentOriginatorResponse">
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="btmsg:ResponseHeaderMultiItem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries standard response fields</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

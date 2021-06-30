@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by Bottomline Technologies (Bottomline Technologies) -->
+<xsd:schema xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/checkmgmt/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btamt="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" xmlns:btbank="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" xmlns:btuser="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:btsearch="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/checkmgmt/v1" elementFormDefault="qualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="./platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/amount/v1" schemaLocation="./platformAmount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/bank/v1" schemaLocation="./platformBank.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/user/v1" schemaLocation="./platformUser.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/search/v1" schemaLocation="./platformSearch.xsd"/>
+	<xsd:simpleType name="SerialNumber">
+		<xsd:restriction base="xsd:unsignedLong">
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="CheckEntryId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Uniquely identify a payment. Define payment id as extension of row Identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="btws:RowIdentifier"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:group name="StopCommonInfo">
+		<xsd:sequence>
+			<xsd:element name="accountData" type="btacct:AccountDataExtended">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the account</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumber" type="tns:SerialNumber">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check serial number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumberTo" type="tns:SerialNumber" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">To check serial number. If this is supplied it defines a range withe the required serial number being the lower bound.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amount" type="btamt:Amount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional check amount.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkIssueDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional check issue date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payeeName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional payee name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="memo" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Optional memo data</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="additionalData" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="CheckResponseInfo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Per check response</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="accountData" type="btacct:AccountDataExtended">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the account</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumber" type="tns:SerialNumber">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check serial number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates whether action (e.g. place or cancel stop) completed succesfully</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="reason" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Reject reason if action not successful</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:group name="StopResponseInfo">
+		<xsd:sequence>
+			<xsd:element name="checkEntryId" type="tns:CheckEntryId">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Data used to uniquely identify the check entry within WebSeries</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkResponse" type="tns:CheckResponseInfo" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Status of request for each check. If a range supplied there may be a response for each check in the range.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="CheckImageData">
+		<xsd:sequence>
+			<xsd:element name="accountData" type="btacct:AccountDataExtended" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details of the account</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumber" type="tns:SerialNumber" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check serial number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkImage" type="btws:Image">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Encoded binary data containing check image. Required xmime:contentType attribute will contain mime type for image data.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="backCheckImage" type="btws:Image" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Encoded binary data containing back of check image. Required xmime:contentType attribute will contain mime type for image data.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CheckInquiryItem">
+		<xsd:sequence>
+			<xsd:element name="account" type="btacct:AccountDataExtended">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Account information (number, bank, ABA/BIC etc.) related to check.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="checkStatus" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check status information</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumber" type="xsd:long">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check serial number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="serialNumberTo" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Upper check serial number for a range of checks.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amount" type="btamt:Amount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check amount.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="customerName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Customers name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="customerFax" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Customers fax number</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="expirationDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Expiration date for a stop</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="issueDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check issue date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="memo" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Memo text</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paidDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check paid date.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payee" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payee listed on check</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="reasonCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Reject reason code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sequenceNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Sequence number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stopDuration" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Duration of stop placed on check</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stopDurationDescription" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Text description of stop duration</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stopEffectiveDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Effective date of stop</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stopPlacementReason" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Reason for placing stop on check</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="documentImageNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Unique key for fetching check image</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="additionalData" type="btws:nameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

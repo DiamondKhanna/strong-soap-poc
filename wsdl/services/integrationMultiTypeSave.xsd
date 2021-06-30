@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/multitypesave/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/multitypesave/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="../domain/platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:element name="MultiTypeSaveRequest" type="tns:MultiTypeSaveRequest" nillable="true"/>
+	<xsd:element name="MultiSaveByRowRequest" type="tns:MultiSaveByRowRequest" nillable="true"/>
+	<xsd:element name="MultiSaveByIdRequest" type="tns:MultiSaveByIdRequest" nillable="true"/>
+	<xsd:element name="MultiTypeSaveResponse" type="tns:MultiTypeSaveResponse" nillable="true"/>
+	<xsd:element name="MultiSaveResponse" type="tns:MultiTypeSaveResponse" nillable="true"/>
+	<xsd:complexType name="MultiTypeSaveRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="action" type="btws:ActionData"/>
+			<xsd:element name="updateIds" type="btws:UpdateId" nillable="true" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="rejectReason" type="xsd:string" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultiSaveByRowRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="action" type="btws:ActionData"/>
+			<xsd:element name="rowIds" type="btws:RowIdentifier" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="rejectReason" type="xsd:string" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultiSaveByIdRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="action" type="btws:ActionData"/>
+			<xsd:element name="flatIds" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="rejectReason" type="xsd:string" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultiTypeSaveResponse">
+		<xsd:sequence>
+			<xsd:element name="respHeader" type="btmsg:ResponseHeaderMultiItem"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

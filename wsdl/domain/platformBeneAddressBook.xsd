@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://www.bottomline.com/webseries/schema/ps/platform/beneaddressbook/v1" xmlns:achpmt="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" xmlns:btws="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" xmlns:btacct="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" xmlns:btpayment="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.bottomline.com/webseries/schema/ps/platform/beneaddressbook/v1" elementFormDefault="qualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/common/v1" schemaLocation="./platformCommon.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/account/v1" schemaLocation="./platformAccount.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/v1" schemaLocation="./platformPayment.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/payment/ach/v1" schemaLocation="./platformPaymentACH.xsd"/>
+	<xsd:complexType name="Address">
+		<xsd:sequence>
+			<xsd:group ref="btws:Address2"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AddressWithFourLines">
+		<xsd:sequence>
+			<xsd:group ref="btws:Address4"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BeneAddressBookHeader">
+		<xsd:sequence>
+			<xsd:element name="TNum" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries Beneficiary ID</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries User Group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentUserGroup" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries Parent User Group</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary Name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneReference" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary Reference</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="childFlag" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Flag to indicate this is a child bene</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="masterBeneName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">If this is a child bene, this indicates the beneName of the parent</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="address" type="tns:Address" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary Address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="phoneNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary Phone</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="faxNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary Fax</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="emailAddress" type="xsd:string" minOccurs="0" maxOccurs="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary Email(s)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statusInfo" type="btpayment:StatusData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code and description representing beneficiary's current status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="updateCount" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Represents the number of times the beneficiary address book entry has been modified</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entered" type="btpayment:BasicAuditData">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on beneficiary entry into WebSeries </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastModified" type="btpayment:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on last update to beneficiary</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="approved" type="btpayment:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on beneficiary approval</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="deleted" type="btpayment:BasicAuditData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Details on beneficiary deletion</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lastActionTimestamp" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Date and time of last action performed on this beneficiary</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BeneAddressBookItem">
+		<xsd:sequence>
+			<xsd:element name="TNum" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries Beneficiary Child ID</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentTnum" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">WebSeries Parent Beneficiary ID</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child Beneficiary Name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneReference" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child Beneficiary Reference</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneRefFields" type="achpmt:additionalReferenceFields" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Additional fields for FPS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+			<xsd:element name="paymentProduct" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment ProductCode</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment TypeCode</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentFunction" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment FunctionCode</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="paymentEntryMethod" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Payment Entrymethod</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clearingMethod" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Method of clearing e.g. NACHA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneChildAddress" type="tns:Address" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child Beneficiary Address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneChildAddress4" type="tns:AddressWithFourLines" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child Beneficiary Address</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountType" type="btacct:AccountType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child Beneficiary Account type e.g. For ACH:DD, GL, SV, For RTGS: ABA, BIC, Other etc.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountNumber" type="xsd:string" nillable="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child Beneficiary Account number. This needs to be combined with bank identifier (either ABA, BIC or other sort code) to uniquely identify an account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currencyCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Child Beneficiary Account Currency represented by 3 digit currency code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneficiaryBank" type="btpayment:BeneficiaryBankDetails" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary bank information including name, id, type and address.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="intermediaryBank" type="btpayment:BeneficiaryBankDetails" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Intermediary bank information including name, id, type and address.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="statusInfo" type="btpayment:StatusData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code and description representing beneficiary's current status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BeneAddressBook">
+		<xsd:sequence>
+			<xsd:element name="beneAddrBookHeader" type="tns:BeneAddressBookHeader">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary header record</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="beneAddrBookItems" type="tns:BeneAddressBookItem" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Beneficiary child records by Payment Type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

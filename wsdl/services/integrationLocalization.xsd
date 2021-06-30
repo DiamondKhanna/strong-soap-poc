@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/localization/v1" xmlns:btloc="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1" xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.bottomline.com/webseries/schema/is/message/localization/v1" elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="./platformMessage.xsd"/>
+	<xs:import namespace="http://www.bottomline.com/webseries/schema/ps/platform/localization/v1" schemaLocation="../domain/platformLocalization.xsd"/>
+	
+	<xs:element name="getApplicationResourcesRequest" nillable="true" type="tns:GetApplicationResourcesRequest" />
+	<xs:element name="getApplicationResourcesResponse" nillable="true" type="tns:GetApplicationResourcesResponse" />
+	
+	<xs:complexType name="GetApplicationResourcesRequest">
+		<xs:sequence>
+			<xs:element name="requestHeader" type="btmsg:RequestHeader">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">WebSeries standard request fields</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="resourcesFilter" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetApplicationResourcesResponse">
+		<xs:sequence>
+			<xs:element name="responseHeader" type="btmsg:ResponseHeader">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">WebSeries standard response fields including boolean result and optionally error code and error messages</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="applicationResource" type="btloc:ApplicationResource" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

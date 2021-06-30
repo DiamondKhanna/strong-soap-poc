@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://www.bottomline.com/webseries/schema/is/message/profilemaint/v1" 
+	xmlns:btpromsg="http://www.bottomline.com/webseries/schema/ps/message/profilemaint/v1" 
+	xmlns:btmsg="http://www.bottomline.com/webseries/schema/ps/message/common/v1" 
+	targetNamespace="http://www.bottomline.com/webseries/schema/is/message/profilemaint/v1" 
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/profilemaint/v1" schemaLocation="platformProfileMaint.xsd"/>
+	<xsd:import namespace="http://www.bottomline.com/webseries/schema/ps/message/common/v1" schemaLocation="platformMessage.xsd"/>
+	<xsd:element name="saveProfileRequest" type="tns:saveProfileRequest" nillable="true"/>
+	<xsd:element name="saveProfileResponse" type="tns:saveProfileResponse" nillable="true"/>
+	<xsd:element name="modifyProfileRequest" type="tns:modifyProfileRequest" nillable="true"/>
+	<xsd:element name="modifyProfileResponse" type="tns:modifyProfileResponse" nillable="true"/>
+	<xsd:element name="getProfileRequest" type="tns:getProfileRequest" nillable="true"/>
+	<xsd:element name="getProfileResponse" type="tns:getProfileResponse" nillable="true"/>
+	<xsd:element name="getProfileListRequest" type="tns:getProfileListRequest" nillable="true"/>
+	<xsd:element name="getProfileListResponse" type="tns:getProfileListResponse" nillable="true"/>
+	<xsd:element name="deleteProfileRequest" type="tns:deleteProfileRequest" nillable="true"/>
+	<xsd:element name="deleteProfileResponse" type="tns:deleteProfileResponse" nillable="true"/>
+	<xsd:element name="filterCriteriaRequest" type="tns:filterCriteriaRequest" nillable="true"/>
+	<xsd:element name="filterCriteriaResponse" type="tns:filterCriteriaResponse" nillable="true"/>
+	<xsd:element name="copyProfileRequest" type="tns:copyProfileRequest" nillable="true"/>
+	<xsd:element name="copyProfileResponse" type="tns:copyProfileResponse" nillable="true"/>
+	<xsd:complexType name="saveProfileRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="platformSaveReq" type="btpromsg:saveProfileEntityRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="saveProfileResponse">
+		<xsd:sequence>
+			<xsd:element name="platformSaveResp" type="btpromsg:saveProfileEntityResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modifyProfileRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="platformModifyReq" type="btpromsg:modifyProfileEntityRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modifyProfileResponse">
+		<xsd:sequence>
+			<xsd:element name="platformModifyResp" type="btpromsg:modifyProfileEntityResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="platformGetProfileReq" type="btpromsg:getProfileEntityRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileResponse">
+		<xsd:sequence>
+			<xsd:element name="platformGetProfileResp" type="btpromsg:getProfileEntityResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileListRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="platformGetProfileListReq" type="btpromsg:getProfileListEntityRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="getProfileListResponse">
+		<xsd:sequence>
+			<xsd:element name="platformGetProfileListResp" type="btpromsg:getProfileListEntityResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="deleteProfileRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="platformDeleteProfileReq" type="btpromsg:deleteProfileEntityRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="deleteProfileResponse">
+		<xsd:sequence>
+			<xsd:element name="platformDeleteProfileResp" type="btpromsg:deleteProfileEntityResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="filterCriteriaRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="platformFilterCriteriaReq" type="btpromsg:filterCriteriaEntityRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="filterCriteriaResponse">
+		<xsd:sequence>
+			<xsd:element name="platformFilterCriteriaResp" type="btpromsg:filterCriteriaEntityResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="copyProfileRequest">
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="btmsg:RequestHeader"/>
+			<xsd:element name="platformCopyProfileReq" type="btpromsg:copyProfileEntityRequest"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="copyProfileResponse">
+		<xsd:sequence>
+			<xsd:element name="platformCopyProfileResp" type="btpromsg:copyProfileEntityResponse"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
